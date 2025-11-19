@@ -1,0 +1,89 @@
+{
+  "components": [
+    {
+      "label": "Profesional asignado",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0yn35nw",
+        "columns": null
+      },
+      "id": "Field_0hhc4ol",
+      "key": "profesional",
+      "readonly": true
+    },
+    {
+      "label": "Tipo de solicitud",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_18yrjr0",
+        "columns": null
+      },
+      "id": "Field_1df4irn",
+      "key": "tipoSolicitud",
+      "readonly": true
+    },
+    {
+      "label": "Descripcion de la solicitud",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_1c4p2rv",
+        "columns": null
+      },
+      "id": "Field_0sf06pd",
+      "key": "descripcion",
+      "readonly": true
+    },
+    {
+      "label": "Tiempod de respuesta",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1mxbwqk",
+        "columns": null
+      },
+      "id": "Field_1tgkzi1",
+      "key": "plazo",
+      "readonly": true
+    },
+    {
+      "label": "Respuesta a la solicitud",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_1ur3n15",
+        "columns": null
+      },
+      "id": "Field_0sl2htv",
+      "key": "respuestaSolicitud",
+      "readonly": true
+    },
+    {
+      "label": "validar respuesta",
+      "values": [
+        {
+          "label": "si",
+          "value": "si"
+        },
+        {
+          "label": "no",
+          "value": "no"
+        }
+      ],
+      "type": "radio",
+      "layout": {
+        "row": "Row_1vyn447",
+        "columns": null
+      },
+      "id": "Field_1orfd3z",
+      "key": "validarRespuesta",
+      "defaultValue": "si"
+    }
+  ],
+  "type": "default",
+  "id": "revisarRespuesta",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.39.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.23.0",
+  "schemaVersion": 19
+}

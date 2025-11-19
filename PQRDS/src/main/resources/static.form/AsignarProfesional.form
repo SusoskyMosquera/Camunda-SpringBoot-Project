@@ -1,0 +1,51 @@
+{
+  "components": [
+    {
+      "label": "",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0opthvg",
+        "columns": null
+      },
+      "id": "Field_1w7nvzh",
+      "key": "textfield_7saiwl",
+      "defaultValue": "Asignar Profesional",
+      "readonly": true
+    },
+    {
+      "label": "Seleccionar profesional",
+      "values": [
+        {
+          "label": "Ing procesos - Abelardo",
+          "value": "Ing procesos - Abelardo"
+        },
+        {
+          "label": "Ing procesos - Maria",
+          "value": "Ing procesos - Maria"
+        },
+        {
+          "label": "Biologo - Cepeda",
+          "value": "Biologo - Cepeda"
+        }
+      ],
+      "type": "select",
+      "layout": {
+        "row": "Row_18ha0r1",
+        "columns": null
+      },
+      "id": "Field_1wwya7v",
+      "key": "profesional",
+      "defaultValue": "Ing procesos - Abelardo",
+      "properties": {}
+    }
+  ],
+  "type": "default",
+  "id": "AsignarProfesional",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.39.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.23.0",
+  "schemaVersion": 19
+}

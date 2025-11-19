@@ -1,0 +1,105 @@
+{
+  "components": [
+    {
+      "subtype": "date",
+      "dateLabel": "Fecha de la radicación de la denuncia:",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_0iapkaq",
+        "columns": null
+      },
+      "id": "Field_1bj6m49",
+      "key": "fechaRadicacion",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Encargado de la denuncia:",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_09s30pk",
+        "columns": null
+      },
+      "id": "Field_0ml7rqs",
+      "key": "encargadoDenuncia"
+    },
+    {
+      "label": "Nombres del denunciante:",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0npfkip",
+        "columns": null
+      },
+      "id": "Field_0mqhmnb",
+      "key": "nombresDenunciante",
+      "disabled": true
+    },
+    {
+      "label": "Apellidos del denunciante",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1yadsfz",
+        "columns": null
+      },
+      "id": "Field_020oztx",
+      "key": "apellidosDenunciante",
+      "disabled": true
+    },
+    {
+      "label": "Correo del denunciante",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0yqg494",
+        "columns": null
+      },
+      "id": "Field_1aby9tw",
+      "key": "correoDenunciante",
+      "disabled": true
+    },
+    {
+      "label": "Descripción de la denuncia:",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_1o58mjd",
+        "columns": null
+      },
+      "id": "Field_1wboryc",
+      "key": "descripcionDenuncia",
+      "disabled": true
+    },
+    {
+      "label": "¿Es en flagrancia?",
+      "values": [
+        {
+          "label": "Si",
+          "value": "si"
+        },
+        {
+          "label": "No",
+          "value": "no"
+        }
+      ],
+      "type": "radio",
+      "layout": {
+        "row": "Row_0j7fs0n",
+        "columns": null
+      },
+      "id": "Field_11633u8",
+      "key": "flagrancia",
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "no"
+    }
+  ],
+  "type": "default",
+  "id": "radicacionDenunciaForm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.39.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 19
+}

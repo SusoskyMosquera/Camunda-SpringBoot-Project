@@ -1,0 +1,192 @@
+{
+  "components": [
+    {
+      "label": "solicitud",
+      "values": [
+        {
+          "label": "peticion",
+          "value": "peticion"
+        },
+        {
+          "label": "queja",
+          "value": "queja"
+        },
+        {
+          "label": "reclamo",
+          "value": "reclamo"
+        },
+        {
+          "label": "sugerencia",
+          "value": "sugerencia"
+        },
+        {
+          "label": "felicitacion",
+          "value": "felicitacion"
+        },
+        {
+          "label": "denuncia",
+          "value": "denuncia"
+        },
+        {
+          "label": "solicitud de informacion",
+          "value": "solicitud de informacion"
+        }
+      ],
+      "type": "select",
+      "layout": {
+        "row": "Row_0gixz99",
+        "columns": null
+      },
+      "id": "Field_0dw2x9v",
+      "key": "tipoSolicitud",
+      "description": "Seleccione el tipo de solicitud que desea registrar",
+      "defaultValue": "peticion"
+    },
+    {
+      "label": "selecciona de que manera desea registrar la solicitud",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1x22m9x",
+        "columns": null
+      },
+      "id": "Field_0cfekj4",
+      "key": "textfield_wqd8kp",
+      "defaultValue": "selecciona de que manera desea registrar la solicitud",
+      "disabled": false,
+      "readonly": true
+    },
+    {
+      "label": "",
+      "values": [
+        {
+          "label": "personal",
+          "value": "personal"
+        },
+        {
+          "label": "anonima",
+          "value": "anonima"
+        }
+      ],
+      "type": "radio",
+      "layout": {
+        "row": "Row_1x22m9x",
+        "columns": null
+      },
+      "id": "Field_0dbxvtk",
+      "key": "modo"
+    },
+    {
+      "label": "Nombres y apellidos",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_143jf5m",
+        "columns": null
+      },
+      "id": "Field_11txx7m",
+      "key": "nombre"
+    },
+    {
+      "label": "Descripcion de la solicitud",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_17d3ieh",
+        "columns": null
+      },
+      "id": "Field_1p52kl9",
+      "key": "descripcion"
+    },
+    {
+      "label": "Selecciona el medio por el que te gustaria recibir la respuesta a tu solicitud *",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0e18u3g",
+        "columns": null
+      },
+      "id": "Field_0ifmdtw",
+      "key": "textfield_wnjcj9",
+      "defaultValue": "Selecciona el medio por el que te gustaria recibir la respuesta a tu solicitud *",
+      "readonly": true
+    },
+    {
+      "label": "Radio group",
+      "values": [
+        {
+          "label": "correo",
+          "value": "correo"
+        },
+        {
+          "label": "telefono",
+          "value": "telefono"
+        }
+      ],
+      "type": "radio",
+      "layout": {
+        "row": "Row_1tgkdy1",
+        "columns": null
+      },
+      "id": "Field_1lq30zj",
+      "key": "recibirRespuesta"
+    },
+    {
+      "label": "Correo electronico",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1uflpe8",
+        "columns": null
+      },
+      "id": "Field_0x10hzz",
+      "key": "email"
+    },
+    {
+      "label": "telefono",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1a4kv1j",
+        "columns": null
+      },
+      "id": "Field_1w5egmq",
+      "key": "telefono"
+    },
+    {
+      "subtype": "date",
+      "dateLabel": "Fecha de la solicitud",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_04w5wpi",
+        "columns": null
+      },
+      "id": "Field_0dsudi4",
+      "key": "fechaSolicitud"
+    },
+    {
+      "label": "¿Adjunta documentos?",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_1oiovou",
+        "columns": null
+      },
+      "id": "Field_0f90qql",
+      "key": "adjDocumentos"
+    },
+    {
+      "label": "Documento anexado",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0czvxoa",
+        "columns": null
+      },
+      "id": "Field_0x1cyt5",
+      "key": "nombreArchivo"
+    }
+  ],
+  "type": "default",
+  "id": "formPQRDS",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.7.0",
+  "versionTag": "1",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.39.0"
+  },
+  "schemaVersion": 19
+}
