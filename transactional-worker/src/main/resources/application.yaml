@@ -1,0 +1,11 @@
+server:
+  port: 9090 # Puerto diferente al Engine (8080) para que puedan correr a la vez
+
+camunda:
+  bpm:
+    client:
+      base-url: http://localhost:8080/engine-rest # URL del Engine
+      worker-id: transactional-worker-node-1       # Identificador de este worker
+      subscriptions:
+        generar-factura-evaluacion:                # Configuración específica por tópico (opcional)
+          lock-duration: 10000                     # Tiempo (ms) que bloqueo la tarea
