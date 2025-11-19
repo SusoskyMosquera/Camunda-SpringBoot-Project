@@ -1,0 +1,109 @@
+{
+  "components": [
+    {
+      "label": "Nombres del denunciante:",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0bvit26",
+        "columns": null
+      },
+      "id": "Field_0r4ke2j",
+      "key": "nombresDenunciante",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Apellidos del denunciante:",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_06qfnlj",
+        "columns": null
+      },
+      "id": "Field_0sqsz3n",
+      "key": "apellidosDenunciante",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Tipo de identificación:",
+      "values": [
+        {
+          "label": "CC",
+          "value": "CC"
+        },
+        {
+          "label": "CE",
+          "value": "CE"
+        },
+        {
+          "label": "TI",
+          "value": "TI"
+        }
+      ],
+      "type": "select",
+      "layout": {
+        "row": "Row_1ubu221",
+        "columns": null
+      },
+      "id": "Field_17tcevw",
+      "key": "tipoIdentificacionDenunciante"
+    },
+    {
+      "label": "Numero del documento:",
+      "type": "number",
+      "layout": {
+        "row": "Row_0a5tog9",
+        "columns": null
+      },
+      "id": "Field_1itjc49",
+      "key": "numeroIdentificacionDenunciante"
+    },
+    {
+      "label": "Correo para recibir la respuesta:",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_02ii7wf",
+        "columns": null
+      },
+      "id": "Field_1gjt6k0",
+      "key": "correoDenunciante",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Descripción de la denuncia:",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_017z8p2",
+        "columns": null
+      },
+      "id": "Field_1hr6dmg",
+      "key": "descripcionDenuncia",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Anexar soporte",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0r6f6lg",
+        "columns": null
+      },
+      "id": "Field_0g5pl9v",
+      "key": "soporteDenuncia"
+    }
+  ],
+  "type": "default",
+  "id": "denunciaForm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.39.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 19
+}

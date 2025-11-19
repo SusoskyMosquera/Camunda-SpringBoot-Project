@@ -1,0 +1,76 @@
+{
+  "components": [
+    {
+      "subtype": "date",
+      "dateLabel": "Fecha de resolución",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_04p1p47",
+        "columns": null
+      },
+      "id": "Field_0xlpetj",
+      "key": "fechaResolucion"
+    },
+    {
+      "label": "Encargado del acto administativo:",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0rt3azw",
+        "columns": null
+      },
+      "id": "Field_0742agd",
+      "key": "profesionalActoAdministrativo",
+      "disabled": true
+    },
+    {
+      "label": "Razones para realizar el acto administrativo",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_1hfpqg7",
+        "columns": null
+      },
+      "id": "Field_02z8kzz",
+      "key": "descripcionActoAdministrativo",
+      "disabled": true
+    },
+    {
+      "label": "Tipo de resolución",
+      "values": [
+        {
+          "label": "Aprobado",
+          "value": "aprobado"
+        },
+        {
+          "label": "Corregir detalles",
+          "value": "corregirDetalles"
+        }
+      ],
+      "type": "select",
+      "layout": {
+        "row": "Row_1onu95s",
+        "columns": null
+      },
+      "id": "Field_08m1x3m",
+      "key": "tipoResolucion"
+    },
+    {
+      "label": "Descripción de la resolución:",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0l6payg",
+        "columns": null
+      },
+      "id": "Field_0ud1109",
+      "key": "DescripcionResolucion"
+    }
+  ],
+  "type": "default",
+  "id": "resolucionActoAdministrativo",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.39.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 19
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_0xy9g75" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <decision id="Decision_094dyfd" name="Determinar Sanción" camunda:historyTimeToLive="1">
+    <decisionTable id="DecisionTable_1efcxv0">
+      <input id="Input_1" label="tipoInfraccion" biodi:width="192" camunda:inputVariable="tipoInfraccion">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" name="valorInfraccion" typeRef="long" />
+      <rule id="DecisionRule_1629mds">
+        <inputEntry id="UnaryTests_1y22jx4">
+          <text>"Multa"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0g16z52">
+          <text>20</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0d6ty54">
+        <inputEntry id="UnaryTests_1o34suo">
+          <text>"Medida de compensacion"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_173l9gf">
+          <text>12</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1oo9964">
+        <inputEntry id="UnaryTests_1qumf7j">
+          <text>"Demolicion"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0l4axso">
+          <text>30</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_094dyfd">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

@@ -1,0 +1,44 @@
+{
+  "components": [
+    {
+      "subtype": "date",
+      "dateLabel": "Fecha de realización del acto administrativo:",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_0rdwsce",
+        "columns": null
+      },
+      "id": "Field_1i4mup7",
+      "key": "fechaActoAdministrativo"
+    },
+    {
+      "label": "Profesional encargado del acto administrativo:",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0a2pp2a",
+        "columns": null
+      },
+      "id": "Field_1e9a95p",
+      "key": "profesionalActoAdministrativo"
+    },
+    {
+      "label": "Razones para realizar el acto administrativo:",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0f0rf9w",
+        "columns": null
+      },
+      "id": "Field_0rs7t67",
+      "key": "descripcionActoAdministrativo"
+    }
+  ],
+  "type": "default",
+  "id": "actoAdministrativoForm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.33.1"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 18
+}

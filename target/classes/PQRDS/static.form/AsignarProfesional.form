@@ -1,0 +1,58 @@
+{
+  "components": [
+    {
+      "label": "",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0opthvg",
+        "columns": null
+      },
+      "id": "Field_1w7nvzh",
+      "key": "textfield_7saiwl",
+      "defaultValue": "Asignar Profesional",
+      "readonly": true
+    },
+    {
+      "label": "Seleccionar profesional",
+      "values": [
+        {
+          "label": "Ing ambiental - Jose Jose",
+          "value": "Ing ambiental - Jose Jose"
+        },
+        {
+          "label": "Ing ambiental - Rafael Orozco",
+          "value": "Ing ambiental - Rafael Orozco"
+        },
+        {
+          "label": "Ing forestal - Rafaela",
+          "value": "Ing forestal - Rafaela"
+        },
+        {
+          "label": "Ing residuos - Fernanda Cabal",
+          "value": "Ing residuos - Fernanda Cabal"
+        },
+        {
+          "label": "Biologo - Migel Polo",
+          "value": "Biolog - Miguel Polo"
+        }
+      ],
+      "type": "select",
+      "layout": {
+        "row": "Row_18ha0r1",
+        "columns": null
+      },
+      "id": "Field_1wwya7v",
+      "key": "profesional",
+      "defaultValue": "value"
+    }
+  ],
+  "type": "default",
+  "id": "AsignarProfesional",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.39.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.23.0",
+  "schemaVersion": 19
+}

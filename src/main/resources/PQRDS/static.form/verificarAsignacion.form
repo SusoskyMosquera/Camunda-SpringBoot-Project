@@ -1,0 +1,69 @@
+{
+  "components": [
+    {
+      "label": "Tipo de solicitud",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0mm6bz3",
+        "columns": null
+      },
+      "id": "Field_1ncdplb",
+      "key": "tipoSolicitud",
+      "disabled": false,
+      "readonly": true
+    },
+    {
+      "label": "Descripcion de la solicitud",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_15id3g0",
+        "columns": null
+      },
+      "id": "Field_0phqd71",
+      "key": "descripcion",
+      "disabled": false,
+      "readonly": true
+    },
+    {
+      "label": "Es su competencia?",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1eghmib",
+        "columns": null
+      },
+      "id": "Field_1gdp2q8",
+      "key": "textfield_t1f5ca",
+      "readonly": true
+    },
+    {
+      "label": "Radio group",
+      "values": [
+        {
+          "label": "si",
+          "value": "si"
+        },
+        {
+          "label": "no",
+          "value": "no"
+        }
+      ],
+      "type": "radio",
+      "layout": {
+        "row": "Row_1eghmib",
+        "columns": null
+      },
+      "id": "Field_173nyal",
+      "key": "competencia",
+      "defaultValue": "si"
+    }
+  ],
+  "type": "default",
+  "id": "verificarAsignacion",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.39.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.23.0",
+  "schemaVersion": 19
+}
