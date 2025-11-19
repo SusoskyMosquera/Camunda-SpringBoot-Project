@@ -1,0 +1,77 @@
+{
+  "components": [
+    {
+      "subtype": "date",
+      "dateLabel": "Fecha de radicación:",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_11hsq7c",
+        "columns": null
+      },
+      "id": "Field_040qzdn",
+      "key": "fechaDeRadicacion"
+    },
+    {
+      "label": "Numero de radicación:",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0ddnyxn",
+        "columns": null
+      },
+      "id": "Field_1kx117i",
+      "key": "numeroRadicacion"
+    },
+    {
+      "label": "Encargado del Acto Administrativo:",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1g79jpo",
+        "columns": null
+      },
+      "id": "Field_0hfetd2",
+      "key": "profesionalActoAdministrativo",
+      "disabled": true
+    },
+    {
+      "label": "Profesional de la radicación:",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0ld5tdb",
+        "columns": null
+      },
+      "id": "Field_0e0z15t",
+      "key": "profesionalRadicacionActoAdministrativo"
+    },
+    {
+      "label": "Descripción del acto administrativo:",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0i62hcl",
+        "columns": null
+      },
+      "id": "Field_0gi9evg",
+      "key": "descripcionActoAdministrativo",
+      "disabled": true
+    },
+    {
+      "label": "Razones de aprobación del acto administrativo:",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0ntxqdh",
+        "columns": null
+      },
+      "id": "Field_1hczzpb",
+      "key": "DescripcionResolucion",
+      "disabled": true
+    }
+  ],
+  "type": "default",
+  "id": "radicacionActoAdministrativo",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.39.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 19
+}

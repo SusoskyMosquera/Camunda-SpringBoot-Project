@@ -1,0 +1,75 @@
+{
+  "components": [
+    {
+      "subtype": "date",
+      "dateLabel": "Fecha de creación del informe técnico:",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_0zyip7h",
+        "columns": null
+      },
+      "id": "Field_0st00lu",
+      "key": "fechaCreacionInformeTecnico",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "subtype": "date",
+      "dateLabel": "Fecha de la visita técnica:",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_0j8a0g0",
+        "columns": null
+      },
+      "id": "Field_0tkzbk2",
+      "key": "fechaVisitaTecnica",
+      "disabled": true
+    },
+    {
+      "label": "Encargado de la visita técnica",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0yu2hcg",
+        "columns": null
+      },
+      "id": "Field_0klyqob",
+      "key": "encargadoVisitaTecnica",
+      "disabled": true,
+      "properties": {}
+    },
+    {
+      "label": "Descripción de la visita de la técnica:",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_1p3pwco",
+        "columns": null
+      },
+      "id": "Field_0xcvi7q",
+      "key": "descripcionVisitaTecnica",
+      "disabled": true
+    },
+    {
+      "label": "Razones por la que no se cometio el delito:",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_119z6e6",
+        "columns": null
+      },
+      "id": "Field_142ikis",
+      "key": "razonesNoCometerDelito",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "informeTecnicoForm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.39.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 19
+}

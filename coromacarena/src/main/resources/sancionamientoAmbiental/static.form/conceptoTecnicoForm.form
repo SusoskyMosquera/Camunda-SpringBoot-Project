@@ -1,0 +1,57 @@
+{
+  "components": [
+    {
+      "subtype": "date",
+      "dateLabel": "Fecha del concepto técnico:",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_1624vz2",
+        "columns": null
+      },
+      "id": "Field_0x566ni",
+      "key": "fechaConceptoTecnico"
+    },
+    {
+      "label": "Nombre del encargado de la visita técnica:",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1kvle1n",
+        "columns": null
+      },
+      "id": "Field_1n4z5m6",
+      "key": "encargadoVisitaTecnica",
+      "disabled": true
+    },
+    {
+      "label": "Descripción del la visita técnica:",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_1eof6iz",
+        "columns": null
+      },
+      "id": "Field_1twuqst",
+      "key": "descripcionVisitaTecnica",
+      "disabled": true
+    },
+    {
+      "label": "Razones porque se cometio la infracción:",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_1gtu3vs",
+        "columns": null
+      },
+      "id": "Field_0bt8vg3",
+      "key": "razonesInfraccion",
+      "disabled": false
+    }
+  ],
+  "type": "default",
+  "id": "conceptoTecnicoSancionamiento",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.39.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 19
+}

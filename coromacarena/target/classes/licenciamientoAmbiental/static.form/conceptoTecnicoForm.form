@@ -1,0 +1,66 @@
+{
+  "components": [
+    {
+      "text": "# Concepto Técnico",
+      "type": "text",
+      "layout": {
+        "row": "Row_16trjab",
+        "columns": null
+      },
+      "id": "Field_08rz2q3"
+    },
+    {
+      "subtype": "date",
+      "dateLabel": "Fecha del concepto técnico:",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_1624vz2",
+        "columns": null
+      },
+      "id": "Field_0x566ni",
+      "key": "fechaConceptoTecnico"
+    },
+    {
+      "subtype": "date",
+      "dateLabel": "Fecha de la visita técnica",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_1bvzx3n",
+        "columns": null
+      },
+      "id": "Field_1jbzl5u",
+      "key": "fechaVisitaTecnica",
+      "disabled": true
+    },
+    {
+      "label": "Definir costo de la licencia:",
+      "type": "number",
+      "layout": {
+        "row": "Row_0akvoz8",
+        "columns": null
+      },
+      "id": "Field_180iv9v",
+      "key": "costoLicencia"
+    },
+    {
+      "label": "Observaciones de la visita técnica:",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_1eof6iz",
+        "columns": null
+      },
+      "id": "Field_1twuqst",
+      "key": "observacionesVisitaTecnica",
+      "disabled": false
+    }
+  ],
+  "type": "default",
+  "id": "conceptoTecnicoForm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.36.1"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.23.0",
+  "schemaVersion": 18
+}

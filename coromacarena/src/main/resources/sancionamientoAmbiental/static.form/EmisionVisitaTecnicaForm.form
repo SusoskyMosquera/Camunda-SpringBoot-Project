@@ -1,0 +1,77 @@
+{
+  "components": [
+    {
+      "subtype": "date",
+      "dateLabel": "Fecha de la visita técnica",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_0kmoazc",
+        "columns": null
+      },
+      "id": "Field_0pts1tr",
+      "key": "fechaVisitaTecnica",
+      "validate": {
+        "required": true
+      },
+      "disabled": false
+    },
+    {
+      "label": "Encargado de la denuncia: ",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0bjz4dy",
+        "columns": null
+      },
+      "id": "Field_1kvzxcu",
+      "key": "encargadoDenuncia",
+      "disabled": true
+    },
+    {
+      "label": "Encargado de la visita técnica:",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0pz4nq9",
+        "columns": null
+      },
+      "id": "Field_1ff5b43",
+      "key": "encargadoVisitaTecnica",
+      "disabled": false,
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Descripción de la visita técnica:",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_1nrq1ss",
+        "columns": null
+      },
+      "id": "Field_0pk2avj",
+      "key": "descripcionVisitaTecnica",
+      "validate": {
+        "required": true
+      },
+      "disabled": false
+    },
+    {
+      "label": "Detalles adicionales",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0cz51zf",
+        "columns": null
+      },
+      "id": "Field_1shys6w",
+      "key": "detallesAdicionalesVisitaTecnica"
+    }
+  ],
+  "type": "default",
+  "id": "EmisionVisitaTecnicaForm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.39.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 19
+}

@@ -1,0 +1,45 @@
+{
+  "components": [
+    {
+      "subtype": "date",
+      "dateLabel": "Fecha de la formulación de cargos:",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_1m0uead",
+        "columns": null
+      },
+      "id": "Field_16y0sd8",
+      "key": "fechaFormulacionCargos"
+    },
+    {
+      "label": "Nombre del infractor:",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_07yj2or",
+        "columns": null
+      },
+      "id": "Field_0h00z4q",
+      "key": "nombreInfractor",
+      "disabled": false
+    },
+    {
+      "label": "Cargos:",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0v4c79h",
+        "columns": null
+      },
+      "id": "Field_112nk1o",
+      "key": "DescripcionFormulacionCargos"
+    }
+  ],
+  "type": "default",
+  "id": "formularCargosForm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.39.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.22.0",
+  "schemaVersion": 19
+}
