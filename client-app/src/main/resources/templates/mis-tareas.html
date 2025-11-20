@@ -1,48 +1,195 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Mis Tareas</title>
+    <title>Mis Trámites - Cormacarena</title>
     <link href="/css/cormacarena.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<div class="container py-5">
-    <h3>Tareas Pendientes para: <span th:text="${radicadoId}" class="text-success"></span></h3>
-
-    <div class="alert alert-warning mt-4" th:if="${#lists.isEmpty(tareas)}">
-        Su trámite está siendo gestionado internamente. Por favor espere notificación.
+<body class="bg-light">
+<nav class="navbar navbar-corma mb-4">
+    <div class="container">
+        <span class="navbar-brand">Portal Ciudadano - Mis Trámites</span>
+        <a href="/" class="btn btn-outline-light btn-sm">Volver al Inicio</a>
     </div>
+</nav>
 
-    <div class="card mt-4 shadow-sm" th:each="tarea : ${tareas}">
-        <div class="card-header bg-success text-white fw-bold" th:text="${tarea.name}"></div>
-        <div class="card-body">
-            <form action="/completar-tarea-cliente" method="post">
-                <input type="hidden" name="taskId" th:value="${tarea.id}">
-                <input type="hidden" name="radicadoId" th:value="${radicadoId}">
+<div class="container py-4">
 
-                <div th:if="${tarea.taskDefinitionKey == 'Activity_1z0fd82' or tarea.taskDefinitionKey == 'Activity_1ocl18k'}">
-                    <p>Por favor realice el pago y adjunte la referencia.</p>
-                    <label class="form-label">Referencia de Pago:</label>
-                    <input type="text" name="ReferenciaPago" class="form-control mb-3" required>
-                    <button class="btn btn-primary">Confirmar Pago</button>
+    <div th:if="${vista == 'lista'}">
+        <h3 class="mb-4 text-success fw-bold"><i class="fas fa-history me-2"></i>Historial de Solicitudes</h3>
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Radicado</th>
+                            <th>Trámite</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="proc : ${historial}">
+                            <td class="ps-4 font-monospace small" th:text="${#strings.substring(proc.id, 0, 8)}"></td>
+                            <td><span class="badge bg-secondary" th:text="${proc.processDefinitionKey}"></span></td>
+                            <td th:text="${#strings.substring(proc.startTime, 0, 10)}"></td>
+                            <td>
+                                <span th:if="${proc.state == 'ACTIVE'}" class="badge bg-primary">En Gestión</span>
+
+                                <span th:if="${proc.state == 'COMPLETED'}">
+                                            <span th:if="${proc.resultadoNegocio == 'APROBADO'}" class="badge bg-success">Aprobado</span>
+                                            <span th:if="${proc.resultadoNegocio == 'RECHAZADO'}" class="badge bg-danger">Rechazado</span>
+                                            <span th:if="${proc.resultadoNegocio == null}" class="badge bg-secondary">Finalizado</span>
+                                        </span>
+
+                                <span th:if="${proc.state == 'EXTERNALLY_TERMINATED'}" class="badge bg-dark">Cancelado</span>
+                                <span th:if="${proc.state == 'INTERNALLY_TERMINATED'}" class="badge bg-warning text-dark">Interrumpido</span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(historial)}"><td colspan="5" class="text-center py-5 text-muted">Sin historial.</td></tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <div th:if="${tarea.taskDefinitionKey == 'Activity_197ohxs'}">
-                    <p class="text-danger">Su solicitud fue devuelta. Por favor corrija la información.</p>
-                    <label>Nombre Solicitante (Corregir):</label>
-                    <input type="text" name="nombreSolicitante" class="form-control mb-2">
-                    <button class="btn btn-warning">Corregir y Reenviar</button>
-                </div>
-
-                <div th:unless="${tarea.taskDefinitionKey == 'Activity_1z0fd82' or tarea.taskDefinitionKey == 'Activity_1ocl18k' or tarea.taskDefinitionKey == 'Activity_197ohxs'}">
-                    <p>Se requiere su acción para continuar.</p>
-                    <button class="btn btn-primary">Confirmar y Continuar</button>
-                </div>
-
-            </form>
+            </div>
         </div>
     </div>
-    <a href="/" class="btn btn-link mt-3">Volver</a>
+
+    <div th:if="${vista == 'detalle'}">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-success fw-bold m-0">Detalle Radicado: <span th:text="${radicadoId}" class="text-dark small"></span></h3>
+            <a href="/mis-tareas" class="btn btn-outline-secondary btn-sm">Volver a Lista</a>
+        </div>
+
+        <div th:if="${mensajeFinal}" class="card shadow border-0 mb-4 text-center">
+            <div class="card-body py-5" th:classappend="${tipoFinal == 'success'} ? 'bg-success text-white' : 'bg-danger text-white'">
+                <h2 class="fw-bold" th:text="${mensajeFinal}"></h2>
+                <p class="lead">Proceso finalizado.</p>
+            </div>
+        </div>
+
+        <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show">
+            <span th:text="${mensaje}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <div class="alert alert-info" th:if="${#lists.isEmpty(tareas) and mensajeFinal == null}">
+            <i class="fas fa-clock me-2"></i> <strong>En gestión interna:</strong> Su trámite está en revisión. Por favor espere.
+        </div>
+
+        <div class="card mt-4 shadow-sm border-0" th:each="tarea : ${tareas}">
+            <div class="card-header bg-white border-bottom-0 pt-4 px-4">
+                <h5 class="fw-bold text-primary m-0" th:text="${tarea.name}"></h5>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <form action="/completar-tarea-cliente" method="post">
+                    <input type="hidden" name="taskId" th:value="${tarea.id}">
+                    <input type="hidden" name="radicadoId" th:value="${radicadoId}">
+
+                    <div th:if="${tarea.taskDefinitionKey == 'Activity_1z0fd82'}">
+                        <div class="alert alert-warning">Se requiere pago de tarifa de evaluación.</div>
+                        <label class="fw-bold">Referencia de Pago</label>
+                        <input type="text" name="ReferenciaPagoEvaluacion" class="form-control mb-3" required>
+                        <button class="btn btn-primary w-100">Confirmar Pago</button>
+                    </div>
+
+                    <div th:if="${tarea.taskDefinitionKey == 'Activity_1ocl18k'}">
+                        <div class="alert alert-success">Licencia Aprobada. Realice el pago final.</div>
+                        <label class="fw-bold">Referencia de Pago</label>
+                        <input type="text" name="ReferenciaPagoLicencia" class="form-control mb-3" required>
+                        <button class="btn btn-success w-100">Confirmar Pago</button>
+                    </div>
+
+                    <div th:if="${tarea.taskDefinitionKey == 'Activity_197ohxs'}">
+                        <div class="alert alert-danger border-danger mb-4">
+                            <strong>⚠️ Solicitud Devuelta por Inconsistencias</strong><br>
+                            <span class="small">Motivo: </span>
+                            <strong th:text="${tarea.vars['observacionDatosIniciales']?.value}"></strong>
+                        </div>
+
+                        <h6 class="text-success border-bottom pb-2 mb-3">Editar Información del Solicitante</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="small fw-bold">Nombre / Razón Social</label>
+                                <input type="text" name="nombreSolicitante" class="form-control" th:value="${tarea.vars['nombreSolicitante']?.value}">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="small fw-bold">Tipo ID</label>
+                                <input type="text" name="tipoIdentificacion" class="form-control" th:value="${tarea.vars['tipoIdentificacion']?.value}">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="small fw-bold">Número ID</label>
+                                <input type="text" name="idSolicitante" class="form-control" th:value="${tarea.vars['idSolicitante']?.value}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small fw-bold">Email</label>
+                                <input type="email" name="email" class="form-control" th:value="${tarea.vars['email']?.value}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small fw-bold">Teléfono</label>
+                                <input type="text" name="telefono" class="form-control" th:value="${tarea.vars['telefono']?.value}">
+                            </div>
+                            <div class="col-12">
+                                <label class="small fw-bold">Dirección</label>
+                                <input type="text" name="direccionResidencia" class="form-control" th:value="${tarea.vars['direccionResidencia']?.value}">
+                            </div>
+                        </div>
+
+                        <h6 class="text-success border-bottom pb-2 mb-3">Editar Detalles del Proyecto</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-12">
+                                <label class="small fw-bold">Nombre del Proyecto</label>
+                                <input type="text" name="nombreProyecto" class="form-control" th:value="${tarea.vars['nombreProyecto']?.value}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small fw-bold">Sector</label>
+                                <select name="sectorProyecto" class="form-select">
+                                    <option th:value="${tarea.vars['sectorProyecto']?.value}" th:text="${tarea.vars['sectorProyecto']?.value}" selected></option>
+                                    <option value="Infraestructura">Infraestructura</option>
+                                    <option value="Hidrocarburos">Hidrocarburos</option>
+                                    <option value="Mineria">Minería</option>
+                                    <option value="Vivienda">Vivienda</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small fw-bold">Valor Estimado ($)</label>
+                                <input type="number" name="valorProyecto" class="form-control" th:value="${tarea.vars['valorProyecto']?.value}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small fw-bold">Departamento</label>
+                                <input type="text" name="departamentoProyecto" class="form-control" value="Meta" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small fw-bold">Municipio</label>
+                                <select name="municipioProyecto" class="form-select">
+                                    <option th:value="${tarea.vars['municipioProyecto']?.value}" th:text="${tarea.vars['municipioProyecto']?.value}" selected></option>
+                                    <option value="Villavicencio">Villavicencio</option>
+                                    <option value="Acacías">Acacías</option>
+                                    <option value="Granada">Granada</option>
+                                    <option value="Puerto López">Puerto López</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <h6 class="text-success border-bottom pb-2 mb-3">Actualizar Soporte Documental</h6>
+                        <div class="mb-4">
+                            <label class="small fw-bold">Descripción / Enlace EIA</label>
+                            <textarea name="nombreSoporteEIA" class="form-control" rows="2" th:text="${tarea.vars['nombreSoporteEIA']?.value}"></textarea>
+                        </div>
+
+                        <button class="btn btn-warning w-100 fw-bold text-dark">Corregir y Reenviar Solicitud</button>
+                    </div>
+
+                    <div th:unless="${tarea.taskDefinitionKey == 'Activity_1z0fd82' or tarea.taskDefinitionKey == 'Activity_1ocl18k' or tarea.taskDefinitionKey == 'Activity_197ohxs'}">
+                        <p>Confirme para continuar.</p>
+                        <button class="btn btn-secondary">Continuar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

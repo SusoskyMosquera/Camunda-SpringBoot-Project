@@ -17,17 +17,12 @@
         <h2 class="fw-bold" style="color: var(--corma-green)">Trámites y Servicios</h2>
     </div>
     <div class="row justify-content-center mb-5">
-        <div class="col-md-8">
-            <div class="card border-success">
-                <div class="card-header bg-transparent border-success text-success fw-bold">
-                    <i class="fas fa-search"></i> Consultar Estado / Tareas Pendientes
-                </div>
+        <div class="col-md-8 text-center">
+            <div class="card border-success bg-light">
                 <div class="card-body">
-                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-                    <form action="/mis-tareas" method="get" class="d-flex gap-2">
-                        <input type="text" name="radicadoId" class="form-control" placeholder="Ingrese el ID de su trámite (Ej: 5ebf8218...)" required>
-                        <button type="submit" class="btn btn-success">Buscar</button>
-                    </form>
+                    <h5 class="text-success fw-bold"><i class="fas fa-user-circle me-2"></i>Espacio Ciudadano</h5>
+                    <p>Revise si tiene pagos pendientes, correcciones o notificaciones.</p>
+                    <a href="/mis-tareas" class="btn btn-success btn-lg px-5">Ir a Mis Tareas Pendientes</a>
                 </div>
             </div>
         </div>

@@ -3,47 +3,129 @@
 <body>
 
 <div th:fragment="defaultForm">
-    <p class="text-muted">Tarea genérica. Confirme para avanzar.</p>
+    <div class="alert alert-secondary small">
+        <strong>Datos del Proceso:</strong>
+        <ul>
+            <li th:each="var : ${tarea.vars}" th:if="${var.value.value != null}">
+                <strong th:text="${var.key}"></strong>: <span th:text="${var.value.value}"></span>
+            </li>
+        </ul>
+    </div>
+    <p class="text-muted">Confirme para completar la tarea.</p>
     <button type="submit" class="btn btn-primary w-100">Completar</button>
 </div>
 
 <div th:fragment="Activity_04cs59r">
-    <label>Observaciones</label><textarea name="observacionDatosIniciales" class="form-control mb-3"></textarea>
-    <div class="d-grid gap-2">
-        <button type="submit" name="solicitudValida" value="true" class="btn btn-success">✅ Válido</button>
-        <button type="submit" name="solicitudValida" value="false" class="btn btn-danger">❌ Devolver</button>
+    <div class="card bg-light mb-3">
+        <div class="card-header fw-bold text-success"><i class="fas fa-list-alt me-2"></i>Detalle de la Solicitud</div>
+        <div class="card-body small">
+            <div class="row">
+                <div class="col-12 border-bottom pb-2 mb-2 text-muted fw-bold">Información del Solicitante</div>
+                <div class="col-md-6 mb-1"><strong>Razón Social:</strong> <span th:text="${tarea.vars['nombreSolicitante']?.value}"></span></div>
+                <div class="col-md-6 mb-1"><strong>ID:</strong> <span th:text="${tarea.vars['tipoIdentificacion']?.value} + ' ' + ${tarea.vars['idSolicitante']?.value}"></span></div>
+                <div class="col-md-6 mb-1"><strong>Email:</strong> <span th:text="${tarea.vars['email']?.value}"></span></div>
+                <div class="col-md-6 mb-1"><strong>Teléfono:</strong> <span th:text="${tarea.vars['telefono']?.value}"></span></div>
+                <div class="col-12 mb-1"><strong>Dirección:</strong> <span th:text="${tarea.vars['direccionResidencia']?.value}"></span></div>
+
+                <div class="col-12 border-bottom pb-2 mb-2 mt-3 text-muted fw-bold">Información del Proyecto</div>
+                <div class="col-12 mb-1"><strong>Proyecto:</strong> <span th:text="${tarea.vars['nombreProyecto']?.value}"></span></div>
+                <div class="col-md-6 mb-1"><strong>Sector:</strong> <span th:text="${tarea.vars['sectorProyecto']?.value}"></span></div>
+                <div class="col-md-6 mb-1"><strong>Valor:</strong> $<span th:text="${tarea.vars['valorProyecto']?.value}"></span></div>
+                <div class="col-md-6 mb-1"><strong>Ubicación:</strong> <span th:text="${tarea.vars['municipioProyecto']?.value} + ', ' + ${tarea.vars['departamentoProyecto']?.value}"></span></div>
+
+                <div class="col-12 mt-2 bg-white p-2 rounded border">
+                    <strong>📂 Soporte EIA:</strong> <span th:text="${tarea.vars['nombreSoporteEIA']?.value}" class="text-primary"></span>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <label class="fw-bold">Observaciones / Motivo de Devolución</label>
+    <textarea name="observacionDatosIniciales" class="form-control mb-3" placeholder="Si devuelve la solicitud, explique aquí las correcciones necesarias..."></textarea>
+
+    <div class="d-grid gap-2">
+        <button type="submit" name="solicitudValida" value="true" class="btn btn-success">✅ Datos Correctos</button>
+        <button type="submit" name="solicitudValida" value="false" class="btn btn-danger">❌ Datos Incorrectos (Devolver)</button>
+    </div>
+</div>
+
+<div th:fragment="Activity_0mt96ax">
+    <div class="alert alert-info small mb-3">
+        <strong>Proyecto:</strong> <span th:text="${tarea.vars['nombreProyecto']?.value}"></span><br>
+        <strong>Municipio:</strong> <span th:text="${tarea.vars['municipioProyecto']?.value}"></span>
+    </div>
+    <label class="fw-bold">Profesional Encargado</label>
+    <select name="profesionalAsignado" class="form-select mb-3">
+        <option value="Pedro Pérez (Biólogo)">Pedro Pérez (Biólogo)</option>
+        <option value="Ana García (Ing. Ambiental)">Ana García (Ing. Ambiental)</option>
+        <option value="Carlos Ruiz (Geólogo)">Carlos Ruiz (Geólogo)</option>
+    </select>
+    <button type="submit" class="btn btn-primary w-100">Asignar</button>
 </div>
 
 <div th:fragment="Activity_1dwso6r">
-    <label>Lugar</label><input type="text" name="LugarVisita" class="form-control mb-2">
-    <label>Fecha</label><input type="date" name="FechaVisita" class="form-control mb-2">
-    <label>Concepto</label><textarea name="Observaciones" class="form-control mb-3"></textarea>
-    <div class="d-grid gap-2">
-        <button type="submit" name="TodoCorrecto" value="true" class="btn btn-success">👍 Favorable</button>
-        <button type="submit" name="TodoCorrecto" value="false" class="btn btn-danger">👎 Desfavorable</button>
+    <div class="card bg-light mb-3">
+        <div class="card-body small">
+            <strong>Ubicación:</strong> <span th:text="${tarea.vars['municipioProyecto']?.value}"></span> - <span th:text="${tarea.vars['direccionResidencia']?.value}"></span><br>
+            <strong>Profesional Asignado:</strong> <span th:text="${tarea.vars['profesionalAsignado']?.value}"></span>
+        </div>
     </div>
+
+    <label class="fw-bold">Lugar Visitado</label>
+    <input type="text" name="LugarVisita" class="form-control mb-2" required>
+    <label class="fw-bold">Fecha Realización</label>
+    <input type="date" name="FechaVisita" class="form-control mb-2" required>
+    <label class="fw-bold">Concepto Preliminar</label>
+    <textarea name="Observaciones" class="form-control mb-3"></textarea>
+    <div class="d-grid gap-2">
+        <button type="submit" name="TodoCorrecto" value="true" class="btn btn-success">👍 Concepto Favorable</button>
+        <button type="submit" name="TodoCorrecto" value="false" class="btn btn-danger">👎 Desfavorable (Rechazar)</button>
+    </div>
+</div>
+
+<div th:fragment="Activity_0qtkyf2">
+    <label class="fw-bold">Dictamen Técnico Detallado</label>
+    <textarea name="dictamenTecnico" class="form-control mb-3" rows="5" placeholder="Conclusiones de la evaluación ambiental..."></textarea>
+    <button type="submit" class="btn btn-primary w-100">Radicar Concepto</button>
 </div>
 
 <div th:fragment="Activity_0vzruom">
-    <p>Verifique en el sistema bancario la referencia entregada.</p>
-    <div class="d-grid gap-2">
+    <div class="card bg-white border-primary mb-3 text-center">
+        <div class="card-body">
+            <small class="text-muted">Referencia reportada por el ciudadano:</small>
+            <h4 class="text-primary my-2" th:text="${tarea.vars['ReferenciaPagoLicencia']?.value}">Sin referencia</h4>
+            <span class="badge bg-success">Valor a verificar: 5.000.000 (Simulado)</span>
+        </div>
+    </div>
+    <label class="fw-bold">¿Pago verificado en bancos?</label>
+    <div class="d-grid gap-2 mt-2">
         <button type="submit" name="PagoCorrecto" value="true" class="btn btn-success">💰 Pago Recibido</button>
-        <button type="submit" name="PagoCorrecto" value="false" class="btn btn-danger">🚫 No Pagó</button>
+        <button type="submit" name="PagoCorrecto" value="false" class="btn btn-danger">🚫 No Pagó (Rechazar)</button>
     </div>
 </div>
 
-<div th:fragment="Activity_1v8lr4p">
-    <div class="d-grid gap-2">
-        <button type="submit" name="competencia" value="si" class="btn btn-success">Es Competencia</button>
-        <button type="submit" name="competencia" value="no" class="btn btn-warning">No es Competencia</button>
+<div th:fragment="Activity_1gpd4pm">
+    <div class="alert alert-secondary small">
+        Base Legal: Ley 99 de 1993.<br>
+        Solicitante: <span th:text="${tarea.vars['nombreSolicitante']?.value}"></span>
     </div>
+    <label class="fw-bold">Texto de la Resolución</label>
+    <textarea name="textoResolucion" class="form-control mb-3" rows="4">Resuelve: Otorgar Licencia Ambiental para el proyecto...</textarea>
+    <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" name="resolucionTramiteCompleto" value="true" checked>
+        <label class="form-check-label">Trámite Legal Completo</label>
+    </div>
+    <button type="submit" class="btn btn-dark w-100">Emitir Resolución</button>
 </div>
 
-<div th:fragment="Activity_0aqdeas">
-    <label>Infracción</label><select name="tipoInfraccion" class="form-select mb-2"><option>Leve</option><option>Grave</option></select>
-    <label>Monto ($)</label><input type="number" name="valorInfraccionBase" class="form-control mb-3">
-    <button type="submit" class="btn btn-primary w-100">Registrar</button>
+<div th:fragment="Activity_0zhmpvm">
+    <div class="alert alert-warning">
+        Está a punto de otorgar licencia ambiental al proyecto:
+        <strong th:text="${tarea.vars['nombreProyecto']?.value}"></strong>.
+    </div>
+    <label class="fw-bold">Número de Radicado Final (VITAL)</label>
+    <input type="text" name="RadicadoLicencia" class="form-control mb-3" placeholder="Ej: CORMA-LIC-2025-001" required>
+    <button type="submit" class="btn btn-success w-100">✒️ Firmar y Otorgar</button>
 </div>
 
 </body>

@@ -70,7 +70,7 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Valor Estimado del Proyecto ($COP)</label>
                                 <input type="number" name="valorProyecto" class="form-control" min="1000000" required>
-                                <div class="form-text text-muted">Base para la liquidación de la tarifa de evaluación.</div>
+                                <div class="form-text text-muted">Base para la liquidación de la tarifa.</div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Departamento</label>
@@ -89,16 +89,17 @@
                             </div>
                         </div>
 
-                        <h5 class="text-success mb-3 border-bottom pb-2 mt-5"><i class="fas fa-file-upload me-2"></i>Soporte Documental</h5>
+                        <h5 class="text-success mb-3 border-bottom pb-2 mt-5"><i class="fas fa-file-alt me-2"></i>Descripción del Soporte EIA</h5>
                         <div class="row g-3 mb-4">
                             <div class="col-12">
-                                <label class="form-label fw-bold">Nombre del Archivo EIA (Estudio de Impacto Ambiental)</label>
-                                <input type="text" name="nombreSoporteEIA" class="form-control" placeholder="Ej: Estudio_Impacto_Ambiental_V1.pdf" required>
-                                <div class="form-text text-muted">Ingrese el nombre del documento radicado físicamente o digitalmente.</div>
+                                <label class="form-label fw-bold">Descripción / Enlace del Documento EIA</label>
+                                <textarea name="nombreSoporteEIA" class="form-control" rows="3" placeholder="Describa el soporte entregado o pegue un enlace de descarga (Drive/Dropbox)..." required></textarea>
+                                <div class="form-text text-muted">Indique dónde se encuentra el Estudio de Impacto Ambiental.</div>
                             </div>
                         </div>
 
                         <input type="hidden" name="fechaSolicitud" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+
                         <div class="d-grid gap-2 mt-5">
                             <button type="submit" class="btn btn-corma btn-lg">Radicar Solicitud</button>
                             <a href="/" class="btn btn-outline-secondary">Cancelar</a>
@@ -109,5 +110,6 @@
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </body>
 </html>
