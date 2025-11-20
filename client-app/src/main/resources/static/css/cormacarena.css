@@ -1,73 +1,15 @@
 :root {
-    --corma-green: #005826;       /* Verde Institucional Oscuro */
-    --corma-light-green: #6c9a24; /* Verde Hoja */
-    --corma-accent: #f4bc1c;      /* Dorado/Amarillo */
-    --corma-gray: #f8f9fa;
+    --corma-green: #005826;
+    --corma-light-green: #6c9a24;
+    --corma-accent: #f4bc1c;
     --text-dark: #2c3e50;
 }
-
-body {
-    background-color: #f4f7f6;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--text-dark);
-}
-
-/* Header Institucional */
-.navbar-corma {
-    background: linear-gradient(90deg, var(--corma-green) 0%, var(--corma-light-green) 100%);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    padding: 1rem 0;
-}
-
-.navbar-brand {
-    font-weight: bold;
-    font-size: 1.5rem;
-    color: white !important;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Tarjetas de Trámites */
-.card-tramite {
-    border: none;
-    border-radius: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    background: white;
-    overflow: hidden;
-    height: 100%;
-}
-
-.card-tramite:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,88,38,0.15);
-}
-
-.card-header-corma {
-    background-color: var(--corma-green);
-    color: white;
-    font-weight: 600;
-    padding: 1.5rem;
-    text-align: center;
-}
-
-/* Botones */
-.btn-corma {
-    background-color: var(--corma-green);
-    color: white;
-    border-radius: 50px;
-    padding: 10px 25px;
-    font-weight: 600;
-    border: none;
-    transition: all 0.3s;
-}
-
-.btn-corma:hover {
-    background-color: var(--corma-light-green);
-    color: white;
-    transform: scale(1.02);
-}
-
-.form-control:focus {
-    border-color: var(--corma-light-green);
-    box-shadow: 0 0 0 0.25rem rgba(108, 154, 36, 0.25);
-}
+body { background-color: #f4f7f6; font-family: 'Segoe UI', sans-serif; color: var(--text-dark); }
+.navbar-corma { background: linear-gradient(90deg, var(--corma-green) 0%, var(--corma-light-green) 100%); padding: 1rem 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.navbar-brand { font-weight: bold; font-size: 1.5rem; color: white !important; text-transform: uppercase; letter-spacing: 1px; }
+.card-tramite { border: none; border-radius: 15px; transition: transform 0.3s, box-shadow 0.3s; background: white; height: 100%; }
+.card-tramite:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,88,38,0.15); }
+.card-header-corma { background-color: var(--corma-green); color: white; font-weight: 600; padding: 1.5rem; text-align: center; }
+.btn-corma { background-color: var(--corma-green); color: white; border-radius: 50px; padding: 10px 25px; font-weight: 600; border: none; transition: all 0.3s; }
+.btn-corma:hover { background-color: var(--corma-light-green); color: white; transform: scale(1.02); }
+.form-control:focus { border-color: var(--corma-light-green); box-shadow: 0 0 0 0.25rem rgba(108, 154, 36, 0.25); }

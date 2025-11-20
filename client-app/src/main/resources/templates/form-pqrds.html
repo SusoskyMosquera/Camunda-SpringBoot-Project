@@ -1,52 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Radicar PQRDS - Cormacarena</title>
+    <title>PQRDS - Cormacarena</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/cormacarena.css" rel="stylesheet">
 </head>
 <body>
 <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
-                <div class="card-header-corma bg-warning text-dark"> <h4 class="m-0">📢 Radicación de PQRDS</h4>
-                </div>
-                <div class="card-body p-5">
-                    <form action="/pqrds" method="post">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Tipo de Solicitud</label>
-                            <select name="tipoPeticion" class="form-select" required>
-                                <option value="Peticion">Petición</option>
-                                <option value="Queja">Queja</option>
-                                <option value="Reclamo">Reclamo</option>
-                                <option value="Denuncia">Denuncia</option>
-                                <option value="Sugerencia">Sugerencia</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Asunto</label>
-                            <input type="text" name="asunto" class="form-control" placeholder="Resumen breve..." required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Descripción Detallada</label>
-                            <textarea name="descripcion" class="form-control" rows="5" required></textarea>
-                        </div>
-
-                        <div class="mb-4 form-check">
-                            <input type="checkbox" class="form-check-input" id="competenciaCheck" name="esCompetencia" value="true" checked>
-                            <label class="form-check-label text-muted" for="competenciaCheck">
-                                Entiendo que esta solicitud será validada por el área competente.
-                            </label>
-                        </div>
-
-                        <button type="submit" class="btn btn-corma w-100">Enviar PQRDS</button>
-                        <a href="/" class="btn btn-link w-100 mt-2 text-secondary">Volver</a>
-                    </form>
-                </div>
-            </div>
+    <div class="card shadow rounded-4 mx-auto" style="max-width: 700px;">
+        <div class="card-header-corma bg-warning text-dark"><h4>📢 Radicación PQRDS</h4></div>
+        <div class="card-body p-5">
+            <form action="/pqrds" method="post">
+                <div class="mb-3"><label class="fw-bold">Tipo</label><select name="tipoPeticion" class="form-select"><option>Peticion</option><option>Queja</option><option>Reclamo</option></select></div>
+                <div class="mb-3"><label class="fw-bold">Asunto</label><input type="text" name="asunto" class="form-control" required></div>
+                <div class="mb-3"><label class="fw-bold">Descripción</label><textarea name="descripcion" class="form-control" rows="4" required></textarea></div>
+                <input type="hidden" name="esCompetencia" value="true"> <button type="submit" class="btn btn-corma w-100">Enviar</button>
+            </form>
         </div>
     </div>
 </div>

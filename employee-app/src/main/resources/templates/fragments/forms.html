@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="defaultForm">
+    <p class="text-muted">Tarea genérica. Confirme para avanzar.</p>
+    <button type="submit" class="btn btn-primary w-100">Completar</button>
+</div>
+
+<div th:fragment="Activity_04cs59r">
+    <label>Observaciones</label><textarea name="observacionDatosIniciales" class="form-control mb-3"></textarea>
+    <div class="d-grid gap-2">
+        <button type="submit" name="solicitudValida" value="true" class="btn btn-success">✅ Válido</button>
+        <button type="submit" name="solicitudValida" value="false" class="btn btn-danger">❌ Devolver</button>
+    </div>
+</div>
+
+<div th:fragment="Activity_1dwso6r">
+    <label>Lugar</label><input type="text" name="LugarVisita" class="form-control mb-2">
+    <label>Fecha</label><input type="date" name="FechaVisita" class="form-control mb-2">
+    <label>Concepto</label><textarea name="Observaciones" class="form-control mb-3"></textarea>
+    <div class="d-grid gap-2">
+        <button type="submit" name="TodoCorrecto" value="true" class="btn btn-success">👍 Favorable</button>
+        <button type="submit" name="TodoCorrecto" value="false" class="btn btn-danger">👎 Desfavorable</button>
+    </div>
+</div>
+
+<div th:fragment="Activity_0vzruom">
+    <p>Verifique en el sistema bancario la referencia entregada.</p>
+    <div class="d-grid gap-2">
+        <button type="submit" name="PagoCorrecto" value="true" class="btn btn-success">💰 Pago Recibido</button>
+        <button type="submit" name="PagoCorrecto" value="false" class="btn btn-danger">🚫 No Pagó</button>
+    </div>
+</div>
+
+<div th:fragment="Activity_1v8lr4p">
+    <div class="d-grid gap-2">
+        <button type="submit" name="competencia" value="si" class="btn btn-success">Es Competencia</button>
+        <button type="submit" name="competencia" value="no" class="btn btn-warning">No es Competencia</button>
+    </div>
+</div>
+
+<div th:fragment="Activity_0aqdeas">
+    <label>Infracción</label><select name="tipoInfraccion" class="form-select mb-2"><option>Leve</option><option>Grave</option></select>
+    <label>Monto ($)</label><input type="number" name="valorInfraccionBase" class="form-control mb-3">
+    <button type="submit" class="btn btn-primary w-100">Registrar</button>
+</div>
+
+</body>
+</html>

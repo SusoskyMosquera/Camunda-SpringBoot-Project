@@ -8,21 +8,31 @@
 <body>
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-10">
             <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
                 <div class="card-header-corma">
                     <h4 class="m-0">📄 Formulario de Licenciamiento Ambiental</h4>
+                    <p class="small m-0 text-white-50">Diligencie todos los campos para iniciar su trámite</p>
                 </div>
                 <div class="card-body p-5">
                     <form action="/licencias" method="post">
-                        <h5 class="text-success mb-3 border-bottom pb-2">Información del Solicitante</h5>
+
+                        <h5 class="text-success mb-3 border-bottom pb-2"><i class="fas fa-user me-2"></i>Información del Solicitante</h5>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Nombre / Razón Social</label>
-                                <input type="text" name="nombreSolicitante" class="form-control" placeholder="Ej: Constructora S.A.S" required>
+                                <label class="form-label fw-bold">Nombre Completo / Razón Social</label>
+                                <input type="text" name="nombreSolicitante" class="form-control" required>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">NIT / Cédula</label>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">Tipo ID</label>
+                                <select name="tipoIdentificacion" class="form-select" required>
+                                    <option value="CC">Cédula</option>
+                                    <option value="NIT">NIT</option>
+                                    <option value="CE">Cédula Extranjería</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">Número ID</label>
                                 <input type="text" name="idSolicitante" class="form-control" required>
                             </div>
                             <div class="col-md-6">
@@ -30,16 +40,41 @@
                                 <input type="email" name="email" class="form-control" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Teléfono</label>
+                                <label class="form-label fw-bold">Teléfono de Contacto</label>
                                 <input type="tel" name="telefono" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Dirección de Residencia / Notificación</label>
+                                <input type="text" name="direccionResidencia" class="form-control" required>
                             </div>
                         </div>
 
-                        <h5 class="text-success mb-3 border-bottom pb-2">Detalles del Proyecto</h5>
+                        <h5 class="text-success mb-3 border-bottom pb-2 mt-5"><i class="fas fa-project-diagram me-2"></i>Detalles del Proyecto</h5>
                         <div class="row g-3 mb-4">
                             <div class="col-12">
                                 <label class="form-label fw-bold">Nombre del Proyecto</label>
-                                <input type="text" name="nombreProyecto" class="form-control" required>
+                                <input type="text" name="nombreProyecto" class="form-control" placeholder="Ej: Construcción Urbanización Los Pinos" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Sector</label>
+                                <select name="sectorProyecto" class="form-select" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="Infraestructura">Infraestructura</option>
+                                    <option value="Hidrocarburos">Hidrocarburos</option>
+                                    <option value="Mineria">Minería</option>
+                                    <option value="Agroindustria">Agroindustria</option>
+                                    <option value="Energia">Energía</option>
+                                    <option value="Vivienda">Vivienda</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Valor Estimado del Proyecto ($COP)</label>
+                                <input type="number" name="valorProyecto" class="form-control" min="1000000" required>
+                                <div class="form-text text-muted">Base para la liquidación de la tarifa de evaluación.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Departamento</label>
+                                <input type="text" name="departamentoProyecto" class="form-control" value="Meta" readonly>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Municipio</label>
@@ -48,16 +83,23 @@
                                     <option value="Villavicencio">Villavicencio</option>
                                     <option value="Acacías">Acacías</option>
                                     <option value="Granada">Granada</option>
+                                    <option value="Puerto López">Puerto López</option>
+                                    <option value="San Martín">San Martín</option>
                                 </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Valor Estimado ($COP)</label>
-                                <input type="number" name="valorProyecto" class="form-control" min="1000000" required>
-                                <div class="form-text text-muted">Valor base para liquidación de tarifa.</div>
                             </div>
                         </div>
 
-                        <div class="d-grid gap-2 mt-4">
+                        <h5 class="text-success mb-3 border-bottom pb-2 mt-5"><i class="fas fa-file-upload me-2"></i>Soporte Documental</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Nombre del Archivo EIA (Estudio de Impacto Ambiental)</label>
+                                <input type="text" name="nombreSoporteEIA" class="form-control" placeholder="Ej: Estudio_Impacto_Ambiental_V1.pdf" required>
+                                <div class="form-text text-muted">Ingrese el nombre del documento radicado físicamente o digitalmente.</div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="fechaSolicitud" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+                        <div class="d-grid gap-2 mt-5">
                             <button type="submit" class="btn btn-corma btn-lg">Radicar Solicitud</button>
                             <a href="/" class="btn btn-outline-secondary">Cancelar</a>
                         </div>

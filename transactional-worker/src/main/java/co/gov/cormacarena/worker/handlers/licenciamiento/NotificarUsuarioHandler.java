@@ -1,4 +1,4 @@
-package co.gov.cormacarena.worker.handlers;
+package co.gov.cormacarena.worker.handlers.licenciamiento;
 
 import org.camunda.bpm.client.spring.annotation.ExternalTaskSubscription;
 import org.camunda.bpm.client.task.ExternalTask;

@@ -6,8 +6,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -20,31 +20,39 @@ public class TramitesService {
 
     public String iniciarProceso(String processKey, Map<String, String> datosFormulario) {
         String url = ENGINE_URL + "/process-definition/key/" + processKey + "/start";
+        return enviarAEngine(url, datosFormulario);
+    }
 
-        // 1. Convertir datos planos (String) a estructura Camunda (Value/Type)
+    public void completarTarea(String taskId, Map<String, String> datosFormulario) {
+        String url = ENGINE_URL + "/task/" + taskId + "/complete";
+        enviarAEngine(url, datosFormulario);
+    }
+
+    public List<Map> consultarTareasPorProceso(String processInstanceId) {
+        String url = ENGINE_URL + "/task?processInstanceId=" + processInstanceId;
+        return restTemplate.getForObject(url, List.class);
+    }
+
+    // Método auxiliar privado para reutilizar lógica de conversión y envío
+    private String enviarAEngine(String url, Map<String, String> datos) {
         Map<String, Object> variablesCamunda = new HashMap<>();
 
-        for (Map.Entry<String, String> entry : datosFormulario.entrySet()) {
+        for (Map.Entry<String, String> entry : datos.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-
-            // Detección simple de tipos (puedes mejorar esto)
             String type = "String";
             Object typedValue = value;
 
             if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
                 type = "Boolean";
                 typedValue = Boolean.parseBoolean(value);
-            } else if (value.matches("-?\\d+") && !key.contains("telefono") && !key.contains("id")) {
-                // Si es número y no es teléfono ni ID, lo tratamos como Long
+            } else if (value.matches("-?\\d+") && !key.toLowerCase().contains("telefono") && !key.toLowerCase().contains("id")) {
                 type = "Long";
                 typedValue = Long.parseLong(value);
             }
-
             variablesCamunda.put(key, Map.of("value", typedValue, "type", type));
         }
 
-        // 2. Preparar Request
         Map<String, Object> body = new HashMap<>();
         body.put("variables", variablesCamunda);
 
@@ -52,16 +60,7 @@ public class TramitesService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 
-        // 3. Enviar y obtener respuesta
         Map response = restTemplate.postForObject(url, request, Map.class);
-        return (String) response.get("id");
-    }
-
-    // Mantener método antiguo por compatibilidad si es necesario, redirigiendo al nuevo
-    public String iniciarLicenciamiento(String nombre, Long valor) {
-        return iniciarProceso("LicenciamientoAmbiental", Map.of(
-                "nombreSolicitante", nombre,
-                "valorProyecto", String.valueOf(valor)
-        ));
+        return response != null ? (String) response.get("id") : null;
     }
 }

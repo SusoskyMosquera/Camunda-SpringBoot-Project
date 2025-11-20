@@ -29,7 +29,7 @@ public class WebController {
 
     @PostMapping("/licencias")
     public String iniciarLicencia(@RequestParam Map<String, String> params, Model model) {
-        return procesarTramite("LicenciamientoAmbiental", params, model);
+        return procesarTramite("licenciamientoAmbientalProcess", params, model);
     }
 
     // --- 2. PQRDS ---
@@ -40,7 +40,6 @@ public class WebController {
 
     @PostMapping("/pqrds")
     public String iniciarPqrds(@RequestParam Map<String, String> params, Model model) {
-        // Mapeo especial para checkbox HTML (si no está marcado no se envía)
         params.putIfAbsent("esCompetencia", "false");
         return procesarTramite("PQRDS", params, model);
     }
@@ -48,23 +47,25 @@ public class WebController {
     // --- 3. SANCIONATORIO (DENUNCIAS) ---
     @GetMapping("/denuncias")
     public String formDenuncias() {
-        return "form-denuncia"; // Asegúrate de crear este HTML si lo necesitas
+        return "form-denuncia";
     }
 
     @PostMapping("/denuncias")
     public String iniciarDenuncia(@RequestParam Map<String, String> params, Model model) {
+        // CORRECCIÓN: El ID que pusimos en el XML del paso anterior fue 'SancionatorioAmbiental'
         return procesarTramite("SancionatorioAmbiental", params, model);
     }
 
-    // --- MÉTODO GENÉRICO PARA NO REPETIR CÓDIGO ---
+    // --- MÉTODO GENÉRICO ---
     private String procesarTramite(String processKey, Map<String, String> params, Model model) {
         try {
             String idInstancia = tramitesService.iniciarProceso(processKey, params);
             model.addAttribute("mensaje", "¡Radicado Exitoso! Su número de seguimiento es: " + idInstancia);
             return "exito";
         } catch (Exception e) {
-            model.addAttribute("mensaje", "Error al radicar: " + e.getMessage()); // Reusamos exito.html para error simple
-            return "exito";
+            // e.printStackTrace(); // Descomenta para ver el error en consola si vuelve a fallar
+            model.addAttribute("mensaje", "Error al radicar: " + e.getMessage());
+            return "exito"; // Usamos la misma vista para mostrar el error
         }
     }
 }
