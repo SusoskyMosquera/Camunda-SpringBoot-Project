@@ -43,19 +43,6 @@
       "defaultValue": "peticion"
     },
     {
-      "label": "selecciona de que manera desea registrar la solicitud",
-      "type": "textfield",
-      "layout": {
-        "row": "Row_1x22m9x",
-        "columns": null
-      },
-      "id": "Field_0cfekj4",
-      "key": "textfield_wqd8kp",
-      "defaultValue": "selecciona de que manera desea registrar la solicitud",
-      "disabled": false,
-      "readonly": true
-    },
-    {
       "label": "",
       "values": [
         {
@@ -94,18 +81,6 @@
       },
       "id": "Field_1p52kl9",
       "key": "descripcion"
-    },
-    {
-      "label": "Selecciona el medio por el que te gustaria recibir la respuesta a tu solicitud *",
-      "type": "textfield",
-      "layout": {
-        "row": "Row_0e18u3g",
-        "columns": null
-      },
-      "id": "Field_0ifmdtw",
-      "key": "textfield_wnjcj9",
-      "defaultValue": "Selecciona el medio por el que te gustaria recibir la respuesta a tu solicitud *",
-      "readonly": true
     },
     {
       "label": "Radio group",

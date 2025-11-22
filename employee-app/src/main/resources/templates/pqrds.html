@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Intranet Cormacarena | PQRDS</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .nav-pills .nav-link.active { background-color: #005826; }
+    .nav-pills .nav-link { color: #005826; font-weight: 500; }
+    .badge-process { font-size: 0.8em; opacity: 0.8; }
+
+    .datos-proceso-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    @media (max-width: 576px) {
+      .datos-proceso-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .dato-clave {
+      font-weight: 600;
+      color: #495057;
+      text-align: right;
+      padding-right: 0.5rem;
+    }
+    .dato-valor {
+      word-break: break-word;
+      color: #212529;
+    }
+    .datos-proceso-card {
+      background-color: #f8f9fa;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      border: 1px solid #e9ecef;
+    }
+
+    .profesion-select-group {
+      margin-bottom: 1rem;
+    }
+    .profesion-select-group label {
+      font-weight: 600;
+      color: #2c6c3d;
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+    .profesion-select-group select {
+      width: 100%;
+      border-color: #a8d5b5;
+    }
+
+    .plazo-input-group {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .plazo-unit {
+      flex: 1;
+      min-width: 100px;
+    }
+    .plazo-unit input {
+      text-align: center;
+    }
+    .plazo-unit label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #495057;
+    }
+    .plazo-preview {
+      font-family: monospace;
+      background-color: #f1f9f4;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      margin-top: 0.75rem;
+      font-weight: 600;
+      color: #1e5c34;
+      border: 1px dashed #a8d5b5;
+    }
+  </style>
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-success mb-4 shadow-sm">
+  <div class="container-fluid px-4">
+    <span class="navbar-brand fw-bold"><i class="fas fa-building me-2"></i>Cormacarena | Gestión Interna</span>
+    <a href="/" class="btn btn-outline-light btn-sm">← Volver a Bandeja</a>
+  </div>
+</nav>
+
+<div class="container-fluid px-4">
+
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-2">
+      <ul class="nav nav-pills nav-fill">
+        <li class="nav-item">
+          <a class="nav-link" th:classappend="${rolActual == 'Portal'} ? 'active'" href="/pqrds?rol=Portal">📧 Portal</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:classappend="${rolActual == 'Gestor'} ? 'active'" href="/pqrds?rol=Gestor">📁 Gestor</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:classappend="${rolActual == 'JefePQRDS'} ? 'active'" href="/pqrds?rol=JefePQRDS">👔 Jefe PQRDS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:classappend="${rolActual == 'ProfesionalPQRDS'} ? 'active'" href="/pqrds?rol=ProfesionalPQRDS">👨‍💼 Profesional</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/pqrds?rol=todos">👁️ Ver Todos</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+    <strong th:text="${error}"></strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+      <h5 class="m-0 fw-bold text-secondary">
+        <span th:if="${rolActual == 'Portal'}">Recepción de PQRDS</span>
+        <span th:if="${rolActual == 'Gestor'}">Gestión Inicial</span>
+        <span th:if="${rolActual == 'JefePQRDS'}">Supervisión y Asignación</span>
+        <span th:if="${rolActual == 'ProfesionalPQRDS'}">Respuesta Técnica</span>
+        <span th:if="${rolActual == 'todos'}">Todas las Tareas PQRDS</span>
+      </h5>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+          <tr>
+            <th class="ps-4">Proceso</th>
+            <th>Actividad</th>
+            <th>Profesional</th>
+            <th>Fecha Ingreso</th>
+            <th>Acción</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="tarea : ${tareas}">
+            <td class="ps-4">
+              <span class="badge bg-secondary badge-process" th:text="${tarea.processDefinitionKey}">PROCESO</span>
+            </td>
+            <td class="fw-bold text-primary" th:text="${tarea.name}">Nombre Tarea</td>
+            <td th:text="${#strings.substring(tarea.created, 0, 10)}">Fecha</td>
+            <td>
+              <button type="button" class="btn btn-success btn-sm px-3 rounded-pill"
+                      data-bs-toggle="modal" th:data-bs-target="'#modal' + ${tarea.id}">
+                Gestionar
+              </button>
+
+              <div class="modal fade" th:id="'modal' + ${tarea.id}" tabindex="-1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                      <h5 class="modal-title" th:text="${tarea.name}"></h5>
+                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="/completar" method="post" th:data-tarea-key="${tarea.taskDefinitionKey}">
+                        <input type="hidden" name="taskId" th:value="${tarea.id}">
+                        <input type="hidden" name="rolActual" th:value="${rolActual}">
+
+                        <div class="datos-proceso-card mb-3">
+                          <h6 class="fw-bold text-success mb-2"><i class="fas fa-clipboard-list me-2"></i>Datos del Proceso</h6>
+                          <div class="datos-proceso-grid">
+                            <div><span class="dato-clave">Descripción:</span></div>
+                            <div><span class="dato-valor" th:text="${tarea.vars.descripcion?.value ?: '—'}">—</span></div>
+                            <div><span class="dato-clave">Nombre archivo:</span></div>
+                            <div><span class="dato-valor" th:text="${tarea.vars.nombreArchivo?.value ?: '—'}">—</span></div>
+                            <div><span class="dato-clave">Fecha solicitud:</span></div>
+                            <div><span class="dato-valor" th:text="${tarea.vars.fechaSolicitud?.value ?: '—'}">—</span></div>
+                            <div><span class="dato-clave">Tipo solicitud:</span></div>
+                            <div><span class="dato-valor" th:text="${tarea.vars.tipoSolicitud?.value ?: '—'}">—</span></div>
+                            <div><span class="dato-clave">Recibir respuesta:</span></div>
+                            <div><span class="dato-valor" th:text="${tarea.vars.recibirRespuesta?.value ?: '—'}">—</span></div>
+                            <div><span class="dato-clave">Teléfono:</span></div>
+                            <div><span class="dato-valor" th:text="${tarea.vars.telefono?.value ?: '—'}">—</span></div>
+                            <div><span class="dato-clave">Adjunta documentos:</span></div>
+                            <div><span class="dato-valor" th:text="${tarea.vars.adjDocumentos?.value ? 'Sí' : 'No'}">—</span></div>
+                            <div><span class="dato-clave">Nombre:</span></div>
+                            <div><span class="dato-valor" th:text="${tarea.vars.nombre?.value ?: '—'}">—</span></div>
+                            <div><span class="dato-clave">Modo de contacto:</span></div>
+                            <div><span class="dato-valor" th:text="${tarea.vars.modo?.value ?: '—'}">—</span></div>
+                            <div><span class="dato-clave">Correo:</span></div>
+                            <div><span class="dato-valor" th:text="${tarea.vars.email?.value ?: '—'}">—</span></div>
+                          </div>
+                        </div>
+
+                        <div th:if="${tarea.name == 'Verificar que es competencia de Cormacarena'}">
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">¿Es competencia de Cormacarena?</label>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="competencia" th:id="'competenciaSi_' + ${tarea.id}" value="si" required>
+                              <label class="form-check-label" th:for="'competenciaSi_' + ${tarea.id}">✅ Sí</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="competencia" th:id="'competenciaNo_' + ${tarea.id}" value="no" required>
+                              <label class="form-check-label" th:for="'competenciaNo_' + ${tarea.id}">❌ No</label>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div th:if="${tarea.name == 'Verificar asignación'}">
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">¿Está asignado correctamente el tipo de solicitud?</label>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="competencia" th:id="'competenciaSi_' + ${tarea.id}" value="si" required>
+                              <label class="form-check-label" th:for="'competenciaSi_' + ${tarea.id}">✅ Sí</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="competencia" th:id="'competenciaNo_' + ${tarea.id}" value="no" required>
+                              <label class="form-check-label" th:for="'competenciaNo_' + ${tarea.id}">❌ No</label>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div th:if="${tarea.name == 'Asignar profesionales'}">
+                          <div class="mb-3">
+                            <label class="form-label fw-bold text-success">Seleccione un Profesional</label>
+
+                            <select class="form-select" name="profesional" required>
+                              <option value="">— Seleccione la Profesión y el Asignado —</option>
+                              <optgroup label="Biólogo">
+                                <option value="Biólogo - José Rojas">Biólogo - José Rojas</option>
+                              </optgroup>
+                              <optgroup label="Ingeniero Forestal">
+                                <option value="Ingeniero Forestal - Maritza Martínez">Ingeniero Forestal - Maritza Martínez</option>
+                                <option value="Ingeniero Forestal - Carlos Díaz">Ingeniero Forestal - Carlos Díaz</option>
+                              </optgroup>
+                              <optgroup label="Ingeniero Ambiental">
+                                <option value="Ingeniero Ambiental - Ana López">Ingeniero Ambiental - Ana López</option>
+                                <option value="Ingeniero Ambiental - Luis Fernández">Ingeniero Ambiental - Luis Fernández</option>
+                              </optgroup>
+                              <optgroup label="Zootecnista">
+                                <option value="Zootecnista - Sofía Ramírez">Zootecnista - Sofía Ramírez</option>
+                              </optgroup>
+                              <optgroup label="Abogado Ambiental">
+                                <option value="Abogado Ambiental - Diego Gómez">Abogado Ambiental - Diego Gómez</option>
+                              </optgroup>
+                              <optgroup label="Técnico en Recursos Naturales">
+                                <option value="Técnico en Recursos Naturales - Manuel Torres">Técnico en Recursos Naturales - Manuel Torres</option>
+                                <option value="Técnico en Recursos Naturales - Elena Ruiz">Técnico en Recursos Naturales - Elena Ruiz</option>
+                              </optgroup>
+                              <optgroup label="Geógrafo">
+                                <option value="Geógrafo - Patricia Sánchez">Geógrafo - Patricia Sánchez</option>
+                              </optgroup>
+                            </select>
+
+                          </div>
+                        </div>
+
+                        <div th:if="${tarea.taskDefinitionKey == 'Activity_0pmfty7'}">
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Plazo máximo de respuesta</label>
+                            <div class="alert alert-info small">
+                              <i class="fas fa-info-circle me-1"></i>
+                              Defina el plazo en días, horas y/o minutos.
+                            </div>
+
+                            <div class="plazo-input-group">
+                              <div class="plazo-unit">
+                                <label th:for="'dias_' + ${tarea.id}">Días</label>
+                                <input type="number" th:id="'dias_' + ${tarea.id}" class="form-control" min="0" value="0" oninput="generarDuracion(this.form)">
+                              </div>
+                              <div class="plazo-unit">
+                                <label th:for="'horas_' + ${tarea.id}">Horas</label>
+                                <input type="number" th:id="'horas_' + ${tarea.id}" class="form-control" min="0" max="23" value="0" oninput="generarDuracion(this.form)">
+                              </div>
+                              <div class="plazo-unit">
+                                <label th:for="'minutos_' + ${tarea.id}">Minutos</label>
+                                <input type="number" th:id="'minutos_' + ${tarea.id}" class="form-control" min="0" max="59" value="0" oninput="generarDuracion(this.form)">
+                              </div>
+                            </div>
+
+                            <input type="hidden" name="plazo" th:id="'campoPlazo_' + ${tarea.id}" value="P0D">
+
+                            <div class="plazo-preview">
+                              <span>Formato Camunda:</span> <span th:id="'previewPlazo_' + ${tarea.id}">P0D</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div th:if="${tarea.taskDefinitionKey == 'Activity_0607mqq'}">
+                          <h6 class="fw-bold text-success mb-3"><i class="fas fa-signature me-2"></i>Aprobación y Firma Final</h6>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Profesional Asignado</label>
+                            <input type="text" class="form-control bg-light" readonly
+                                   th:value="${tarea.vars.profesional?.value ?: '—'}">
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Plazo Asignado</label>
+                            <input type="text" class="form-control bg-light" readonly
+                                   th:value="${tarea.vars.plazo?.value ?: '—'}">
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Descripción de la Solicitud</label>
+                            <textarea class="form-control bg-light" rows="3" readonly
+                                      th:text="${tarea.vars.descripcion?.value ?: '—'}">—</textarea>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold text-primary">Detalle de la Firma / Aprobación</label>
+                            <textarea class="form-control" name="firma" rows="3" required
+                                      placeholder="Ingrese el nombre y cargo del aprobador o cualquier detalle de firma..."></textarea>
+                          </div>
+                        </div>
+
+                        <div th:if="${tarea.taskDefinitionKey == 'Activity_0b3qdlg'}">
+                          <h6 class="fw-bold text-success mb-3"><i class="fas fa-file-pdf me-2"></i>Radicación y Finalización</h6>
+                          <div class="alert alert-warning small">
+                            <i class="fas fa-print me-1"></i>
+                            Utilice el botón **Guardar como PDF** antes de completar la tarea.
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Descripción de la Solicitud</label>
+                            <textarea class="form-control bg-light" rows="3" readonly
+                                      th:text="${tarea.vars.descripcion?.value ?: '—'}">—</textarea>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Plazo Asignado</label>
+                            <input type="text" class="form-control bg-light" readonly
+                                   th:value="${tarea.vars.plazo?.value ?: '—'}">
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Detalle de la Firma/Aprobación</label>
+                            <textarea class="form-control bg-light" rows="3" readonly
+                                      th:text="${tarea.vars.firma?.value ?: '—'}">—</textarea>
+                          </div>
+
+                          <button type="button" class="btn btn-primary w-100 mb-3"
+                                  th:data-modal-id="'modal' + ${tarea.id}"
+                                  onclick="imprimirContenidoDesdeData(this)">
+                            <i class="fas fa-save me-2"></i>Guardar como PDF
+                          </button>
+                        </div>
+
+                        <div th:if="${tarea.taskDefinitionKey == 'Activity_1uzqpdw'}">
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Tipo de Solicitud</label>
+                            <div class="form-control bg-light" readonly>
+                              <span th:text="${tarea.vars.tipoSolicitud?.value ?: '—'}">—</span>
+                            </div>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Descripción</label>
+                            <textarea class="form-control bg-light" rows="3" readonly
+                                      th:text="${tarea.vars.descripcion?.value ?: '—'}">—</textarea>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold text-success">Respuesta a la Solicitud</label>
+                            <textarea class="form-control" name="respuestaSolicitud" rows="5" required
+                                      placeholder="Redacte aquí la respuesta técnica..."></textarea>
+                          </div>
+                        </div>
+
+
+                        <div th:if="${tarea.taskDefinitionKey == 'Activity_1tml0tf'}">
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Profesional Asignado</label>
+                            <input type="text" class="form-control bg-light" readonly
+                                   th:value="${tarea.vars.profesional?.value ?: '—'}">
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Tipo de Solicitud</label>
+                            <input type="text" class="form-control bg-light" readonly
+                                   th:value="${tarea.vars.tipoSolicitud?.value ?: '—'}">
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Descripción</label>
+                            <textarea class="form-control bg-light" rows="3" readonly
+                                      th:text="${tarea.vars.descripcion?.value ?: '—'}">—</textarea>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Plazo Asignado</label>
+                            <input type="text" class="form-control bg-light" readonly
+                                   th:value="${tarea.vars.plazo?.value ?: '—'}">
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold">Respuesta del Profesional</label>
+                            <textarea class="form-control bg-light" rows="4" readonly
+                                      th:text="${tarea.vars.respuestaSolicitud?.value ?: '—'}">—</textarea>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label fw-bold text-success">¿La respuesta es técnica y adecuada?</label>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="validarRespuesta" id="validarSi" value="si" required>
+                              <label class="form-check-label" for="validarSi">✅ Sí, es válida</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="validarRespuesta" id="validarNo" value="no" required>
+                              <label class="form-check-label" for="validarNo">❌ No, requiere corrección</label>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-success w-100">
+                          <i class="fas fa-check me-2"></i>
+                          Completar Tarea
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(tareas)}">
+            <td colspan="4" class="text-center py-5 text-muted">
+              <i class="fas fa-check-circle fa-3x mb-3 text-success opacity-50"></i><br>
+              No hay tareas pendientes para este rol.
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // ✅ Generar duración ISO 8601
+  function generarDuracion(form) {
+    const dias = parseInt(form.querySelector('[id^="dias_"]')?.value) || 0;
+    const horas = parseInt(form.querySelector('[id^="horas_"]')?.value) || 0;
+    const minutos = parseInt(form.querySelector('[id^="minutos_"]')?.value) || 0;
+    const campoPlazo = form.querySelector('input[name="plazo"]');
+    const preview = form.querySelector('[id^="previewPlazo_"]');
+
+    let parts = [];
+    if (dias > 0) parts.push(dias + 'D');
+    if (horas > 0 || minutos > 0) {
+      let time = 'T';
+      if (horas > 0) time += horas + 'H';
+      if (minutos > 0) time += minutos + 'M';
+      parts.push(time);
+    }
+    const duracion = parts.length ? 'P' + parts.join('') : 'P0D';
+
+    if (campoPlazo) {
+      campoPlazo.value = duracion;
+    }
+    if (preview) {
+      preview.textContent = duracion;
+    }
+    return duracion;
+  }
+
+  // ✅ Función de ayuda para leer el data-id y llamar a la función de impresión
+  function imprimirContenidoDesdeData(buttonElement) {
+    const modalId = buttonElement.getAttribute('data-modal-id');
+    if (modalId) {
+        imprimirContenido(modalId);
+    }
+  }
+
+  // ✅ Función principal para imprimir el contenido del formulario (Guardar como PDF)
+  function imprimirContenido(modalId) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+
+    // Ocultar elementos para una impresión limpia (botones, headers)
+    const elementsToHide = modal.querySelectorAll('.modal-header, .btn');
+
+    elementsToHide.forEach(el => {
+      el.style.display = 'none';
+    });
+
+    // Clonar el contenido del body del modal y prepararlo para impresión
+    const printContent = modal.querySelector('.modal-body').innerHTML;
+    const originalBody = document.body.innerHTML;
+
+    // Crear una ventana temporal de impresión con contenido limpio
+    document.body.innerHTML = `
+      <div style="font-family: Arial, sans-serif; padding: 20px;">
+        <h3 style="color: #005826; border-bottom: 2px solid #ccc; padding-bottom: 10px;">Respuesta Final de PQRDS</h3>
+        ${printContent}
+      </div>
+    `;
+
+    window.print();
+
+    // Restaurar el contenido original del cuerpo
+    document.body.innerHTML = originalBody;
+
+    // Reasigna los listeners de Bootstrap y muestra el modal original
+    const modalElement = document.getElementById(modalId);
+    if (modalElement) {
+        new bootstrap.Modal(modalElement).show();
+    }
+  }
+
+  // ✅ Inicialización y validación
+  document.addEventListener('DOMContentLoaded', () => {
+
+    // 2. Validar al enviar
+    document.addEventListener('submit', function(e) {
+      const form = e.target;
+      if (form.tagName !== 'FORM') return;
+
+      const tareaKey = form.dataset.tareaKey;
+      const tareaNombre = form.querySelector('.modal-title')?.textContent;
+
+      // ✅ Asignar plazo (Activity_0pmfty7)
+      if (tareaKey === 'Activity_0pmfty7') {
+        const campoPlazo = form.querySelector('input[name="plazo"]');
+
+        generarDuracion(form);
+
+        if (campoPlazo && campoPlazo.value === 'P0D') {
+          e.preventDefault();
+          alert('⚠️ El plazo debe ser mayor a cero. Ingrese al menos 1 día, hora o minuto.');
+          return false;
+        }
+      }
+
+      // ✅ Asignar profesionales
+      if (tareaNombre === 'Asignar profesionales') {
+        const campoProf = form.querySelector('select[name="profesional"]');
+        if (!campoProf?.value?.trim()) {
+          e.preventDefault();
+          alert('⚠️ Debe seleccionar un profesional.');
+          return false;
+        }
+      }
+
+      // ✅ Validación: Aprobar respuesta final (Activity_0607mqq)
+      if (tareaKey === 'Activity_0607mqq') {
+        const firma = form.querySelector('textarea[name="firma"]')?.value?.trim();
+        if (!firma) {
+          e.preventDefault();
+          alert('⚠️ Debe ingresar el detalle de la firma o aprobación.');
+          return false;
+        }
+      }
+
+      // ✅ Responder solicitud técnico (Activity_1uzqpdw)
+      if (tareaKey === 'Activity_1uzqpdw') {
+        const respuesta = form.querySelector('textarea[name="respuestaSolicitud"]')?.value?.trim();
+        if (!respuesta) {
+          e.preventDefault();
+          alert('⚠️ La respuesta a la solicitud es obligatoria.');
+          return false;
+        }
+      }
+
+      // ✅ Validar respuesta técnica (Activity_1tml0tf)
+      if (tareaKey === 'Activity_1tml0tf') {
+        const validacion = form.querySelector('input[name="validarRespuesta"]:checked');
+        if (!validacion) {
+          e.preventDefault();
+          alert('⚠️ Debe indicar si la respuesta es válida o no.');
+          return false;
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>

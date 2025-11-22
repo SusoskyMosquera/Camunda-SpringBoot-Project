@@ -1,18 +1,6 @@
 {
   "components": [
     {
-      "label": "",
-      "type": "textfield",
-      "layout": {
-        "row": "Row_0opthvg",
-        "columns": null
-      },
-      "id": "Field_1w7nvzh",
-      "key": "textfield_7saiwl",
-      "defaultValue": "Asignar Profesional",
-      "readonly": true
-    },
-    {
       "label": "Seleccionar profesional",
       "values": [
         {

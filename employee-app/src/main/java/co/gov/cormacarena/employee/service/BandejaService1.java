@@ -1,5 +1,4 @@
 package co.gov.cormacarena.employee.service;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -9,9 +8,8 @@ import org.springframework.core.io.ByteArrayResource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 @Service
-public class BandejaService {
+public class BandejaService1 {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -28,43 +26,39 @@ public class BandejaService {
 
         if (tareas != null) {
             for (Map<String, Object> tarea : tareas) {
-                // 1. Obtener processDefinitionKey de forma robusta
+                String taskId = (String) tarea.get("id");
+
+                // 1. Añadir processDefinitionKey (Lógica para corregir el error de Thymeleaf)
                 String procDefId = (String) tarea.get("processDefinitionId");
-                String procDefKey = "Desconocido";
+                String procDefKey = "Desconocido"; // Valor por defecto
 
                 if (procDefId != null) {
-                    // Caso 1: Formato "key:version:id" → extraemos key
-                    if (procDefId.contains(":")) {
-                        procDefKey = procDefId.split(":")[0];
-                    }
-                    // Caso 2: Solo UUID → consultamos la definición del proceso
-                    else {
-                        try {
+                    try {
+                        // Intentamos extraer la clave del proceso. Ej: "LicenciamientoAmbientalProcess:1:..." -> "LicenciamientoAmbientalProcess"
+                        if (procDefId.contains(":")) {
+                            procDefKey = procDefId.split(":")[0];
+                        } else {
+                            // Si solo es un UUID, consultamos la definición del proceso (similar a la lógica V2)
                             String defUrl = ENGINE_URL + "/process-definition/" + procDefId;
                             Map procDef = restTemplate.getForObject(defUrl, Map.class);
-                            if (procDef != null) {
+                            if (procDef != null && procDef.get("key") != null) {
                                 procDefKey = (String) procDef.get("key");
-                                if (procDefKey == null || procDefKey.isEmpty()) {
-                                    procDefKey = (String) procDef.get("id");
-                                }
                             }
-                        } catch (Exception e) {
-                            System.err.println("No se pudo obtener processDefinitionKey para ID: " + procDefId);
                         }
+                    } catch (Exception e) {
+                        System.err.println("No se pudo obtener processDefinitionKey para ID: " + procDefId);
                     }
                 }
-
                 tarea.put("processDefinitionKey", procDefKey);
 
-                // 2. Cargar variables
-                String taskId = (String) tarea.get("id");
+                // 2. Cargar variables (Lógica original de BandejaService1)
                 try {
                     String varUrl = ENGINE_URL + "/task/" + taskId + "/variables";
-                    Map<String, Object> variables = restTemplate.getForObject(varUrl, Map.class);
-                    tarea.put("vars", variables != null ? variables : new HashMap<>());
+                    Map variables = restTemplate.getForObject(varUrl, Map.class);
+                    tarea.put("vars", variables);
                 } catch (Exception e) {
-                    System.err.println("Error variables tarea " + taskId + ": " + e.getMessage());
-                    tarea.put("vars", new HashMap<>());
+                    System.err.println("Error cargando variables para tarea " + taskId);
+                    tarea.put("vars", new HashMap<>()); // Asegura que 'vars' existe
                 }
             }
         }
@@ -72,9 +66,9 @@ public class BandejaService {
         return tareas;
     }
 
+    // ... (restantes métodos: obtenerHistorialTramites, completarTarea, descargarArchivoVariable sin cambios) ...
+
     public List<Map> obtenerHistorialTramites() {
-        // Consultamos instancias históricas (finalizadas y activas)
-        // Ordenamos por fecha de inicio descendente
         String url = ENGINE_URL + "/history/process-instance?sortBy=startTime&sortOrder=desc";
         return restTemplate.getForObject(url, List.class);
     }
@@ -99,8 +93,6 @@ public class BandejaService {
     }
 
     public ResponseEntity<Resource> descargarArchivoVariable(String taskId, String variableName) {
-        // 1. Obtener metadata de la variable (para saber el nombre del archivo y tipo)
-        // Endpoint: GET /task/{id}/variables/{varName}
         String infoUrl = ENGINE_URL + "/task/" + taskId + "/variables/" + variableName;
         Map infoVar = restTemplate.getForObject(infoUrl, Map.class);
 
@@ -108,18 +100,14 @@ public class BandejaService {
             throw new RuntimeException("No hay archivo adjunto");
         }
 
-        // Camunda devuelve info del archivo en valueInfo si es tipo File
         Map valueInfo = (Map) infoVar.get("valueInfo");
         String filename = (valueInfo != null && valueInfo.get("filename") != null)
                 ? (String) valueInfo.get("filename")
                 : "descarga.bin";
 
-        // 2. Descargar el contenido binario
-        // Endpoint: GET /task/{id}/variables/{varName}/data
         String dataUrl = ENGINE_URL + "/task/" + taskId + "/variables/" + variableName + "/data";
         byte[] archivoBytes = restTemplate.getForObject(dataUrl, byte[].class);
 
-        // 3. Retornar como recurso descargable
         ByteArrayResource resource = new ByteArrayResource(archivoBytes);
 
         return ResponseEntity.ok()

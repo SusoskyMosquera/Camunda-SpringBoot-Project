@@ -25,17 +25,6 @@
       "readonly": true
     },
     {
-      "label": "Es su competencia?",
-      "type": "textfield",
-      "layout": {
-        "row": "Row_1eghmib",
-        "columns": null
-      },
-      "id": "Field_1gdp2q8",
-      "key": "textfield_t1f5ca",
-      "readonly": true
-    },
-    {
       "label": "Radio group",
       "values": [
         {

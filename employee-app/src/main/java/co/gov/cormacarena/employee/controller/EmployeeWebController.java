@@ -7,10 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -25,6 +23,22 @@ public class EmployeeWebController {
     // Variable para agrupar TODAS las tareas internas (excluyendo al ciudadano)
     private static final String TODAS_TAREAS_EMPLEADOS;
 
+    // Nombres de actividades que tienen formulario personalizado (más legibles y estables que taskDefinitionKey)
+    private static final Set<String> TAREAS_POR_NOMBRE = Set.of(
+            "Verificar que es competencia de Cormacarena",
+            "Verificar asignación"
+            // Puedes añadir más aquí, ej: "Asignar plazo", "Dar respuesta técnica", etc.
+    );
+
+    private static final Map<String, String> NOMBRE_A_FORMULARIO_PQRDS = Map.of(
+            "Verificar que es competencia de Cormacarena", "verificarCompetenciaForm",
+            "Verificar asignación", "verificarAsignacionForm"
+    );
+    // Mapeo: nombre de tarea → nombre de fragmento
+    private static final Map<String, String> NOMBRE_A_FORMULARIO = Map.of(
+            "Verificar que es competencia de Cormacarena", "verificarCompetenciaForm",
+            "Verificar asignación", "verificarAsignacionForm"
+    );
     static {
         // 1. LICENCIAMIENTO
         ROLES_TAREAS.put("coordinador", String.join(",",
@@ -41,18 +55,35 @@ public class EmployeeWebController {
         ROLES_TAREAS.put("juridica", "Activity_1gpd4pm"); // Resolución
         ROLES_TAREAS.put("director", "Activity_0zhmpvm"); // Firmar
 
+        //PQRDS
+        // 1. Inicial
+        ROLES_TAREAS.put("Portal", String.join(",",
+                "Activity_1v8lr4p", //Verificar que es competencia de Cormacarena
+                "Event_1m0pzub" // Iniciar PQRDS
+        ));
+        ROLES_TAREAS.put("Gestor", String.join(",",
+                "Activity_0npouia", //Archivar PQRDS no competencia
+                "Activity_0b3qdlg" //Archivar PQRDS competencia
+
+        ));
+        ROLES_TAREAS.put("JefePQRDS", String.join(",",
+                "Activity_0k6qtqd", //Verificar asignación
+                "Activity_1vjrine", //Informar no competencia
+                "Activity_1v96s1f",  //Asignar profesionales
+                "Activity_0pmfty7",  //Asignar plazo
+                "Activity_1tml0tf", //Revisar respuesta
+                "Activity_0607mqq"  //Firmar respuesta
+
+        ));
+        ROLES_TAREAS.put("ProfesionalPQRDS", String.join(",",
+                "Activity_1uzqpdw" //Dar respuesta
+
+        ));
+
+
         // 2. OTROS PROCESOS (PQRDS / Sancionatorio)
         ROLES_TAREAS.put("otros", String.join(",",
-                "Activity_1v8lr4p", // PQRDS: Verificar competencia
-                "Activity_0k6qtqd", // PQRDS: Verificar asignación
-                "Activity_1vjrine", // PQRDS: Informar no competencia
-                "Activity_0npouia", // PQRDS: Archivar
-                "Activity_1v96s1f", // PQRDS: Asignar profesionales
-                "Activity_0pmfty7", // PQRDS: Asignar plazo
-                "Activity_1uzqpdw", // PQRDS: Dar respuesta
-                "Activity_1tml0tf", // PQRDS: Revisar respuesta
-                "Activity_0607mqq", // PQRDS: Firmar respuesta
-                "Activity_0b3qdlg", // PQRDS: Archivar final
+
 
                 "Activity_0aqdeas", // SANC: Valor infracción
                 "Activity_1hc4usc", // SANC: Determinar infracción
@@ -82,25 +113,72 @@ public class EmployeeWebController {
             "Activity_0zhmpvm", "Activity_1v8lr4p", "Activity_0aqdeas",
             "Activity_1hc4usc"
     );
+    private List<Map> cargarTareas(String rol, Model model) {
+        String taskKeys = "todos".equals(rol)
+                ? TODAS_TAREAS_EMPLEADOS
+                : ROLES_TAREAS.getOrDefault(rol, "");
 
-    @GetMapping("/")
-    public String bandeja(@RequestParam(required = false, defaultValue = "todos") String rol, Model model) {
+        List<Map> tareas = bandejaService.obtenerTareasPendientes(taskKeys);
+
+        for (Map<String, Object> tarea : tareas) {
+            String taskKey = (String) tarea.get("taskDefinitionKey");
+            String taskName = (String) tarea.get("name");
+            String formKey = "defaultForm";
+
+            // ✅ 1. Prioridad: por NOMBRE de tarea (más estable y legible)
+            if (taskName != null && TAREAS_POR_NOMBRE.contains(taskName)) {
+                formKey = NOMBRE_A_FORMULARIO.getOrDefault(taskName, "defaultForm");
+            }
+            // ✅ 2. Fallback: por taskDefinitionKey (para los ya existentes)
+            else if (taskKey != null && TAREAS_CON_FORMULARIO.contains(taskKey.trim())) {
+                formKey = taskKey.trim();
+            }
+
+            tarea.put("formKey", formKey);
+        }
+
+        model.addAttribute("tareas", tareas);
+        model.addAttribute("rolActual", rol);
+        return tareas;
+    }
+
+
+    @GetMapping("/pqrds")
+    public String pqrds(@RequestParam(defaultValue = "Portal") String rol, Model model) {
         try {
             String taskKeys;
-
-            // Lógica de filtrado
             if ("todos".equals(rol)) {
-                taskKeys = TODAS_TAREAS_EMPLEADOS; // AHORA FILTRA, NO TRAE TODO
+                taskKeys = ROLES_TAREAS.entrySet().stream()
+                        .filter(e -> e.getKey().contains("PQRDS") || "Portal".equals(e.getKey()) || "Gestor".equals(e.getKey()))
+                        .map(Map.Entry::getValue)
+                        .collect(Collectors.joining(","));
             } else {
                 taskKeys = ROLES_TAREAS.getOrDefault(rol, "");
             }
 
             List<Map> tareas = bandejaService.obtenerTareasPendientes(taskKeys);
 
-            // Asignar formularios
+            // ✅ Asignar formKey con lógica robusta (igual que en cargarTareas)
             for (Map<String, Object> tarea : tareas) {
                 String taskKey = (String) tarea.get("taskDefinitionKey");
-                tarea.put("formKey", TAREAS_CON_FORMULARIO.contains(taskKey) ? taskKey : "defaultForm");
+                String taskName = (String) tarea.get("name");
+                String formKey = "defaultForm";
+
+                // Prioridad: por nombre
+                if (taskName != null && TAREAS_POR_NOMBRE.contains(taskName)) {
+                    formKey = NOMBRE_A_FORMULARIO.getOrDefault(taskName, "defaultForm");
+                }
+                // Fallback: por taskKey
+                else if (taskKey != null && TAREAS_CON_FORMULARIO.contains(taskKey.trim())) {
+                    formKey = taskKey.trim();
+                }
+
+                // ✅ Pero: en /pqrds, todas las tareas que NO sean especiales usan 'defaultForm' (formulario simple)
+                if (!TAREAS_POR_NOMBRE.contains(taskName)) {
+                    formKey = "defaultForm";
+                }
+
+                tarea.put("formKey", formKey);
             }
 
             model.addAttribute("tareas", tareas);
@@ -108,7 +186,7 @@ public class EmployeeWebController {
         } catch (Exception e) {
             model.addAttribute("error", "Error: " + e.getMessage());
         }
-        return "bandeja";
+        return "pqrds";
     }
 
     @PostMapping("/completar")
