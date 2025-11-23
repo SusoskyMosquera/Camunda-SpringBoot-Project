@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 public class EmployeeWebController {
@@ -18,7 +19,36 @@ public class EmployeeWebController {
     private BandejaService bandejaService;
 
     // Mapeo de ROL -> IDs de Tareas del BPMN
-    private static final Map<String, String> ROLES_TAREAS = new HashMap<>();
+        private static final Map<String, String> ROLES_TAREAS = new HashMap<>();
+
+        private static final List<String> TAREAS_SANCIONATORIO = List.of(
+            "Activity_1kmxdrx",
+            "Activity_0yrmz41",
+            "Activity_0aqdeas",
+            "Activity_0v8jnti",
+            "Activity_1xnfbt3",
+            "Activity_0dtdoio",
+            "Activity_0sw7kwk",
+            "Activity_1232Cone",
+            "Activity_0batq4k",
+            "Activity_0l5a265",
+            "Activity_0xrka9p",
+            "Activity_1u8j2ux",
+            "Activity_10rhcun"
+        );
+
+        private static final List<String> TAREAS_PQRDS = List.of(
+            "Activity_1v8lr4p",
+            "Activity_0npouia",
+            "Activity_0b3qdlg",
+            "Activity_0k6qtqd",
+            "Activity_1vjrine",
+            "Activity_1v96s1f",
+            "Activity_0pmfty7",
+            "Activity_1tml0tf",
+            "Activity_0607mqq",
+            "Activity_1uzqpdw"
+        );
 
     // Variable para agrupar TODAS las tareas internas (excluyendo al ciudadano)
     private static final String TODAS_TAREAS_EMPLEADOS;
@@ -30,7 +60,8 @@ public class EmployeeWebController {
             // Puedes añadir más aquí, ej: "Asignar plazo", "Dar respuesta técnica", etc.
     );
 
-    private static final Map<String, String> NOMBRE_A_FORMULARIO_PQRDS = Map.of(
+        @SuppressWarnings("unused")
+        private static final Map<String, String> NOMBRE_A_FORMULARIO_PQRDS = Map.of(
             "Verificar que es competencia de Cormacarena", "verificarCompetenciaForm",
             "Verificar asignación", "verificarAsignacionForm"
     );
@@ -81,25 +112,10 @@ public class EmployeeWebController {
         ));
 
 
-        // 2. OTROS PROCESOS (PQRDS / Sancionatorio)
-        ROLES_TAREAS.put("otros", String.join(",",
-
-
-                "Activity_0aqdeas", // SANC: Valor infracción
-                "Activity_1hc4usc", // SANC: Determinar infracción
-                "Activity_0v8jnti", // SANC: Radicar denuncia
-                "Activity_1xnfbt3", // SANC: Formular cargos
-                "Activity_0ry2plt", // SANC: Recibir recursos
-                "Activity_0dtdoio", // SANC: Informe tecnico
-                "Activity_0sw7kwk", // SANC: Verificar hechos
-                "Activity_1232Cone",// SANC: Elaborar concepto
-                "Activity_0batq4k", // SANC: Registrar flagrancia
-                "Activity_0l5a265", // SANC: Emitir concepto pruebas
-                "Activity_0xrka9p", // SANC: Determinar recursos
-                "Activity_1u8j2ux", // SANC: Determinar condena
-                "Activity_0j9v8ty", // SANC: Recepción descargos
-                "Activity_10rhcun"  // SANC: Recibir respuesta infractor
-        ));
+        // 2. OTROS PROCESOS (Sancionatorio + PQRDS)
+        ROLES_TAREAS.put("otros",
+            Stream.concat(TAREAS_SANCIONATORIO.stream(), TAREAS_PQRDS.stream())
+                .collect(Collectors.joining(",")));
 
         // CONSTRUCCIÓN AUTOMÁTICA DE LA LISTA "VER TODO" (Solo empleados)
         TODAS_TAREAS_EMPLEADOS = ROLES_TAREAS.values().stream()
@@ -107,18 +123,25 @@ public class EmployeeWebController {
     }
 
     // Lista blanca de IDs que tienen formulario personalizado en forms.html
-    private final List<String> TAREAS_CON_FORMULARIO = Arrays.asList(
+        private final List<String> TAREAS_CON_FORMULARIO = crearListaTareasConFormulario();
+
+        private static List<String> crearListaTareasConFormulario() {
+        List<String> tareas = new ArrayList<>(List.of(
             "Activity_04cs59r", "Activity_0mt96ax", "Activity_1dwso6r",
             "Activity_0qtkyf2", "Activity_0vzruom", "Activity_1gpd4pm",
-            "Activity_0zhmpvm", "Activity_1v8lr4p", "Activity_0aqdeas",
-            "Activity_1hc4usc"
-    );
-    private List<Map> cargarTareas(String rol, Model model) {
+            "Activity_0zhmpvm", "Activity_1v8lr4p"
+        ));
+        tareas.addAll(TAREAS_SANCIONATORIO);
+        tareas.addAll(TAREAS_PQRDS);
+        return tareas;
+        }
+    @SuppressWarnings("unused")
+    private List<Map<String, Object>> cargarTareas(String rol, Model model) {
         String taskKeys = "todos".equals(rol)
                 ? TODAS_TAREAS_EMPLEADOS
                 : ROLES_TAREAS.getOrDefault(rol, "");
 
-        List<Map> tareas = bandejaService.obtenerTareasPendientes(taskKeys);
+        List<Map<String, Object>> tareas = bandejaService.obtenerTareasPendientes(taskKeys);
 
         for (Map<String, Object> tarea : tareas) {
             String taskKey = (String) tarea.get("taskDefinitionKey");
@@ -156,7 +179,7 @@ public class EmployeeWebController {
                 taskKeys = ROLES_TAREAS.getOrDefault(rol, "");
             }
 
-            List<Map> tareas = bandejaService.obtenerTareasPendientes(taskKeys);
+            List<Map<String, Object>> tareas = bandejaService.obtenerTareasPendientes(taskKeys);
 
             // ✅ Asignar formKey con lógica robusta (igual que en cargarTareas)
             for (Map<String, Object> tarea : tareas) {
@@ -208,7 +231,7 @@ public class EmployeeWebController {
     @GetMapping("/historial")
     public String verHistorial(Model model) {
         try {
-            List<Map> historial = bandejaService.obtenerHistorialTramites();
+            List<Map<String, Object>> historial = bandejaService.obtenerHistorialTramites();
             model.addAttribute("historial", historial);
             model.addAttribute("rolActual", "historial"); // Para marcar el nav activo
         } catch (Exception e) {

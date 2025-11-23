@@ -33,22 +33,33 @@
                         <tbody>
                         <tr th:each="proc : ${historial}">
                             <td class="ps-4 font-monospace small" th:text="${#strings.substring(proc.id, 0, 8)}"></td>
+
                             <td><span class="badge bg-secondary" th:text="${proc.processDefinitionKey}"></span></td>
+
                             <td th:text="${#strings.substring(proc.startTime, 0, 10)}"></td>
+
                             <td>
                                 <span th:if="${proc.state == 'ACTIVE'}" class="badge bg-primary">En Gestión</span>
 
                                 <span th:if="${proc.state == 'COMPLETED'}">
-                                            <span th:if="${proc.resultadoNegocio == 'APROBADO'}" class="badge bg-success">Aprobado</span>
-                                            <span th:if="${proc.resultadoNegocio == 'RECHAZADO'}" class="badge bg-danger">Rechazado</span>
-                                            <span th:if="${proc.resultadoNegocio == null}" class="badge bg-secondary">Finalizado</span>
-                                        </span>
+                                    <span th:if="${proc['resultadoNegocio'] == 'APROBADO'}" class="badge bg-success">Aprobado</span>
+                                    <span th:if="${proc['resultadoNegocio'] == 'RECHAZADO'}" class="badge bg-danger">Rechazado</span>
+                                    <span th:if="${proc['resultadoNegocio'] == null}" class="badge bg-secondary">Finalizado</span>
+                                </span>
 
                                 <span th:if="${proc.state == 'EXTERNALLY_TERMINATED'}" class="badge bg-dark">Cancelado</span>
+
                                 <span th:if="${proc.state == 'INTERNALLY_TERMINATED'}" class="badge bg-warning text-dark">Interrumpido</span>
                             </td>
+
+                            <td>
+                                <a th:href="@{/mis-tareas(radicadoId=${proc.id})}" class="btn btn-sm btn-outline-success">Ver Detalles</a>
+                            </td>
                         </tr>
-                        <tr th:if="${#lists.isEmpty(historial)}"><td colspan="5" class="text-center py-5 text-muted">Sin historial.</td></tr>
+
+                        <tr th:if="${#lists.isEmpty(historial)}">
+                            <td colspan="5" class="text-center py-5 text-muted">No ha realizado ninguna solicitud aún.</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -75,7 +86,7 @@
         </div>
 
         <div class="alert alert-info" th:if="${#lists.isEmpty(tareas) and mensajeFinal == null}">
-            <i class="fas fa-clock me-2"></i> <strong>En gestión interna:</strong> Su trámite está en revisión. Por favor espere.
+            <i class="fas fa-clock me-2"></i> <strong>En gestión interna:</strong> Su trámite está siendo revisado por los funcionarios de Cormacarena. Por favor espere notificación.
         </div>
 
         <div class="card mt-4 shadow-sm border-0" th:each="tarea : ${tareas}">
@@ -103,62 +114,20 @@
 
                     <div th:if="${tarea.taskDefinitionKey == 'Activity_197ohxs'}">
                         <div class="alert alert-danger border-danger mb-4">
-                            <strong>⚠️ Solicitud Devuelta por Inconsistencias</strong><br>
+                            <strong>⚠️ Solicitud Devuelta</strong><br>
                             <span class="small">Motivo: </span>
                             <strong th:text="${tarea.vars['observacionDatosIniciales']?.value}"></strong>
                         </div>
 
-                        <h6 class="text-success border-bottom pb-2 mb-3">Editar Información del Solicitante</h6>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="small fw-bold">Nombre / Razón Social</label>
-                                <input type="text" name="nombreSolicitante" class="form-control" th:value="${tarea.vars['nombreSolicitante']?.value}">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="small fw-bold">Tipo ID</label>
-                                <input type="text" name="tipoIdentificacion" class="form-control" th:value="${tarea.vars['tipoIdentificacion']?.value}">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="small fw-bold">Número ID</label>
-                                <input type="text" name="idSolicitante" class="form-control" th:value="${tarea.vars['idSolicitante']?.value}">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="small fw-bold">Email</label>
-                                <input type="email" name="email" class="form-control" th:value="${tarea.vars['email']?.value}">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="small fw-bold">Teléfono</label>
-                                <input type="text" name="telefono" class="form-control" th:value="${tarea.vars['telefono']?.value}">
-                            </div>
-                            <div class="col-12">
-                                <label class="small fw-bold">Dirección</label>
-                                <input type="text" name="direccionResidencia" class="form-control" th:value="${tarea.vars['direccionResidencia']?.value}">
-                            </div>
-                        </div>
-
-                        <h6 class="text-success border-bottom pb-2 mb-3">Editar Detalles del Proyecto</h6>
+                        <h6 class="text-success border-bottom pb-2 mb-3">Editar Información</h6>
                         <div class="row g-3 mb-4">
                             <div class="col-12">
                                 <label class="small fw-bold">Nombre del Proyecto</label>
                                 <input type="text" name="nombreProyecto" class="form-control" th:value="${tarea.vars['nombreProyecto']?.value}">
                             </div>
                             <div class="col-md-6">
-                                <label class="small fw-bold">Sector</label>
-                                <select name="sectorProyecto" class="form-select">
-                                    <option th:value="${tarea.vars['sectorProyecto']?.value}" th:text="${tarea.vars['sectorProyecto']?.value}" selected></option>
-                                    <option value="Infraestructura">Infraestructura</option>
-                                    <option value="Hidrocarburos">Hidrocarburos</option>
-                                    <option value="Mineria">Minería</option>
-                                    <option value="Vivienda">Vivienda</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="small fw-bold">Valor Estimado ($)</label>
+                                <label class="small fw-bold">Valor ($)</label>
                                 <input type="number" name="valorProyecto" class="form-control" th:value="${tarea.vars['valorProyecto']?.value}">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="small fw-bold">Departamento</label>
-                                <input type="text" name="departamentoProyecto" class="form-control" value="Meta" readonly>
                             </div>
                             <div class="col-md-6">
                                 <label class="small fw-bold">Municipio</label>
@@ -167,18 +136,11 @@
                                     <option value="Villavicencio">Villavicencio</option>
                                     <option value="Acacías">Acacías</option>
                                     <option value="Granada">Granada</option>
-                                    <option value="Puerto López">Puerto López</option>
                                 </select>
                             </div>
                         </div>
 
-                        <h6 class="text-success border-bottom pb-2 mb-3">Actualizar Soporte Documental</h6>
-                        <div class="mb-4">
-                            <label class="small fw-bold">Descripción / Enlace EIA</label>
-                            <textarea name="nombreSoporteEIA" class="form-control" rows="2" th:text="${tarea.vars['nombreSoporteEIA']?.value}"></textarea>
-                        </div>
-
-                        <button class="btn btn-warning w-100 fw-bold text-dark">Corregir y Reenviar Solicitud</button>
+                        <button class="btn btn-warning w-100 fw-bold text-dark">Corregir y Reenviar</button>
                     </div>
 
                     <div th:unless="${tarea.taskDefinitionKey == 'Activity_1z0fd82' or tarea.taskDefinitionKey == 'Activity_1ocl18k' or tarea.taskDefinitionKey == 'Activity_197ohxs'}">

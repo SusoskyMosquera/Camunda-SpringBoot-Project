@@ -128,5 +128,237 @@
     <button type="submit" class="btn btn-success w-100">✒️ Firmar y Otorgar</button>
 </div>
 
+<!-- SANCIONATORIO AMBIENTAL -->
+<div th:fragment="Activity_1kmxdrx">
+    <div class="mb-3">
+        <label class="fw-bold">Fecha de elaboración *</label>
+        <input type="datetime-local" name="fechaActoAdministrativo" class="form-control"
+               th:value="${tarea.vars['fechaActoAdministrativo']?.value}" required>
+    </div>
+    <div class="mb-3">
+        <label class="fw-bold">Profesional encargado *</label>
+        <input type="text" name="profesionalActoAdministrativo" class="form-control"
+               th:value="${tarea.vars['profesionalActoAdministrativo']?.value}" placeholder="Nombre completo" required>
+    </div>
+    <div class="mb-3">
+        <label class="fw-bold">Descripción del acto administrativo *</label>
+        <textarea name="descripcionActoAdministrativo" class="form-control" rows="4" required
+                  th:text="${tarea.vars['descripcionActoAdministrativo']?.value}"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Guardar acto administrativo</button>
+</div>
+
+<div th:fragment="Activity_0yrmz41">
+    <div class="row g-3">
+        <div class="col-12">
+            <label class="fw-bold">Fecha de resolución *</label>
+            <input type="datetime-local" name="fechaResolucion" class="form-control"
+                   th:value="${tarea.vars['fechaResolucion']?.value}" required>
+        </div>
+        <div class="col-md-6">
+            <label class="fw-bold">Profesional encargado</label>
+            <input type="text" class="form-control" name="profesionalActoAdministrativo"
+                   th:value="${tarea.vars['profesionalActoAdministrativo']?.value}" readonly>
+        </div>
+        <div class="col-md-6">
+            <label class="fw-bold">Descripción original</label>
+            <textarea class="form-control" rows="1" readonly
+                      th:text="${tarea.vars['descripcionActoAdministrativo']?.value}"></textarea>
+        </div>
+        <div class="col-12">
+            <label class="fw-bold">Tipo de resolución *</label>
+            <select name="tipoResolucion" class="form-select" required>
+                <option value="" th:selected="${tarea.vars['tipoResolucion'] == null}">Seleccione...</option>
+                <option value="aprobado" th:selected="${tarea.vars['tipoResolucion']?.value == 'aprobado'}">Aprobado</option>
+                <option value="corregirDetalles" th:selected="${tarea.vars['tipoResolucion']?.value == 'corregirDetalles'}">Corregir detalles</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <label class="fw-bold">Descripción de la resolución *</label>
+            <textarea name="DescripcionResolucion" class="form-control" rows="4" required
+                      th:text="${tarea.vars['DescripcionResolucion']?.value}"></textarea>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-success w-100">Registrar resolución</button>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="Activity_0v8jnti">
+    <div class="row g-3">
+        <div class="col-12">
+            <label class="fw-bold">Fecha de la radicación de la denuncia *</label>
+            <input type="date" name="fechaRadicacion" class="form-control" required>
+        </div>
+        <div class="col-12">
+            <label class="fw-bold">Encargado de la denuncia *</label>
+            <input type="text" name="encargadoDenuncia" class="form-control" placeholder="Nombre completo" required>
+        </div>
+        <div class="col-md-6">
+            <label class="fw-bold">Nombres del denunciante</label>
+            <input type="text" class="form-control" th:value="${tarea.vars['nombresDenunciante']?.value}" readonly>
+        </div>
+        <div class="col-md-6">
+            <label class="fw-bold">Apellidos del denunciante</label>
+            <input type="text" class="form-control" th:value="${tarea.vars['apellidosDenunciante']?.value}" readonly>
+        </div>
+        <div class="col-12">
+            <label class="fw-bold">Correo del denunciante</label>
+            <input type="email" class="form-control" th:value="${tarea.vars['correoDenunciante']?.value}" readonly>
+        </div>
+        <div class="col-12">
+            <label class="fw-bold">Descripción de la denuncia</label>
+            <textarea class="form-control" rows="3" readonly th:text="${tarea.vars['descripcionDenuncia']?.value}"></textarea>
+        </div>
+        <div class="col-12">
+            <label class="fw-bold d-block">¿Es en flagrancia? *</label>
+            <div class="d-flex gap-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" th:id="'flagrancia-si-' + ${tarea.id}" name="flagrancia" value="si"
+                           th:checked="${tarea.vars['flagrancia']?.value == 'si'}">
+                    <label class="form-check-label" th:for="'flagrancia-si-' + ${tarea.id}">Sí</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" th:id="'flagrancia-no-' + ${tarea.id}" name="flagrancia" value="no"
+                           th:checked="${tarea.vars['flagrancia']?.value != 'si'}" required>
+                    <label class="form-check-label" th:for="'flagrancia-no-' + ${tarea.id}">No</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-success w-100">Radicar denuncia</button>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="Activity_0aqdeas">
+    <label class="fw-bold">Nombre del infractor</label>
+    <input type="text" name="nombreInfractor" class="form-control mb-3" th:value="${tarea.vars['nombreInfractor']?.value}" required>
+    <label class="fw-bold">Tipo de infracción</label>
+    <input type="text" name="tipoInfraccion" class="form-control mb-3" placeholder="Multa, demolición, compensación..." required>
+    <label class="fw-bold">Valor base ($)</label>
+    <input type="number" name="valorInfraccionBase" class="form-control mb-3" min="0" step="10000" required>
+    <button type="submit" class="btn btn-primary w-100">Guardar valor</button>
+</div>
+
+<div th:fragment="Activity_0sw7kwk">
+    <label class="fw-bold">Fecha de la visita técnica</label>
+    <input type="date" name="fechaVisitaTecnica" class="form-control mb-3" required>
+    <label class="fw-bold">Descripción de la visita</label>
+    <textarea name="descripcionVisitaTecnica" class="form-control mb-3" rows="3" required></textarea>
+    <label class="fw-bold">Encargado de la visita</label>
+    <input type="text" name="encargadoVisitaTecnica" class="form-control mb-3" required>
+    <label class="fw-bold">¿Se evidenció infracción?</label>
+    <div class="d-flex gap-3 mb-4">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" th:id="'infraccion-si-' + ${tarea.id}" name="infraccion" value="true" required>
+            <label class="form-check-label" th:for="'infraccion-si-' + ${tarea.id}">Sí</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" th:id="'infraccion-no-' + ${tarea.id}" name="infraccion" value="false" required>
+            <label class="form-check-label" th:for="'infraccion-no-' + ${tarea.id}">No</label>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success w-100">Registrar visita</button>
+</div>
+
+<div th:fragment="Activity_1232Cone">
+    <div class="alert alert-light border small">
+        <strong>Visita técnica:</strong>
+        <span th:text="${tarea.vars['descripcionVisitaTecnica']?.value ?: '—'}"></span>
+    </div>
+    <label class="fw-bold">Fecha del concepto técnico</label>
+    <input type="datetime-local" name="fechaConceptoTecnico" class="form-control mb-3" required>
+    <label class="fw-bold">Razones de la infracción</label>
+    <textarea name="razonesInfraccion" class="form-control mb-3" rows="3" required></textarea>
+    <button type="submit" class="btn btn-primary w-100">Guardar concepto</button>
+</div>
+
+<div th:fragment="Activity_0dtdoio">
+    <div class="alert alert-info small">
+        <strong>Visita técnica:</strong>
+        <span th:text="${tarea.vars['fechaVisitaTecnica']?.value ?: '—'}"></span><br>
+        <strong>Encargado:</strong>
+        <span th:text="${tarea.vars['encargadoVisitaTecnica']?.value ?: '—'}"></span>
+    </div>
+    <label class="fw-bold">Fecha de creación del informe</label>
+    <input type="datetime-local" name="fechaCreacionInformeTecnico" class="form-control mb-3" required>
+    <label class="fw-bold">Razones por las que no se cometió el delito</label>
+    <textarea name="razonesNoCometerDelito" class="form-control mb-3" rows="3" required></textarea>
+    <button type="submit" class="btn btn-success w-100">Enviar informe</button>
+</div>
+
+<div th:fragment="Activity_0batq4k">
+    <p class="text-muted small">Completa los datos de la atención en flagrancia.</p>
+    <label class="fw-bold">Descripción de la visita</label>
+    <textarea name="descripcionVisitaTecnica" class="form-control mb-3" rows="3" required></textarea>
+    <label class="fw-bold">Encargado de la visita</label>
+    <input type="text" name="encargadoVisitaTecnica" class="form-control mb-3" required>
+    <button type="submit" class="btn btn-danger w-100">Registrar flagrancia</button>
+</div>
+
+<div th:fragment="Activity_0l5a265">
+    <label class="fw-bold">Nombre del infractor</label>
+    <input type="text" name="nombreInfractor" class="form-control mb-3" th:value="${tarea.vars['nombreInfractor']?.value}" required>
+    <label class="fw-bold">¿Es culpable?</label>
+    <div class="d-flex gap-3 mb-3">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" th:id="'culpable-si-' + ${tarea.id}" name="culpable" value="true" required>
+            <label class="form-check-label" th:for="'culpable-si-' + ${tarea.id}">Sí</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" th:id="'culpable-no-' + ${tarea.id}" name="culpable" value="false" required>
+            <label class="form-check-label" th:for="'culpable-no-' + ${tarea.id}">No</label>
+        </div>
+    </div>
+    <label class="fw-bold">Conclusiones</label>
+    <textarea name="descripcionConclusiones" class="form-control mb-3" rows="3" required></textarea>
+    <button type="submit" class="btn btn-primary w-100">Enviar concepto</button>
+</div>
+
+<div th:fragment="Activity_1xnfbt3">
+    <label class="fw-bold">Fecha de formulación de cargos</label>
+    <input type="datetime-local" name="fechaFormulacionCargos" class="form-control mb-3" required>
+    <label class="fw-bold">Nombre del infractor</label>
+    <input type="text" name="nombreInfractor" class="form-control mb-3" th:value="${tarea.vars['nombreInfractor']?.value}" required>
+    <label class="fw-bold">Detalle de los cargos</label>
+    <textarea name="DescripcionFormulacionCargos" class="form-control mb-3" rows="4" required></textarea>
+    <button type="submit" class="btn btn-warning w-100">Formular cargos</button>
+</div>
+
+<div th:fragment="Activity_0xrka9p">
+    <label class="fw-bold">Nombre del infractor</label>
+    <input type="text" name="nombreInfractor" class="form-control mb-3" th:value="${tarea.vars['nombreInfractor']?.value}" required>
+    <label class="fw-bold">Tipo de recurso que presenta</label>
+    <select name="tipoRecursoReposicion" class="form-select mb-3" required>
+        <option value="">Seleccione una opción</option>
+        <option value="Exoneración">Exoneración</option>
+        <option value="Disminución">Disminución</option>
+        <option value="No">No presenta</option>
+    </select>
+    <button type="submit" class="btn btn-primary w-100">Registrar decisión</button>
+</div>
+
+<div th:fragment="Activity_1u8j2ux">
+    <label class="fw-bold">Porcentaje de disminución (%)</label>
+    <input type="number" name="porcentajeDisminuicion" class="form-control mb-3" min="0" max="100" required>
+    <button type="submit" class="btn btn-success w-100">Aplicar porcentaje</button>
+</div>
+
+<div th:fragment="Activity_10rhcun">
+    <p class="text-muted small">Confirma si el infractor presentó recursos de reposición.</p>
+    <div class="d-flex gap-3 mb-4">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" th:id="'recursos-si-' + ${tarea.id}" name="recursos" value="true" required>
+            <label class="form-check-label" th:for="'recursos-si-' + ${tarea.id}">Sí presentó</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" th:id="'recursos-no-' + ${tarea.id}" name="recursos" value="false" required>
+            <label class="form-check-label" th:for="'recursos-no-' + ${tarea.id}">No presentó</label>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Registrar respuesta</button>
+</div>
+
 </body>
 </html>

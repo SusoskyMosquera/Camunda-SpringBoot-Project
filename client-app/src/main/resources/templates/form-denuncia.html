@@ -10,12 +10,54 @@
     <div class="card shadow rounded-4 mx-auto" style="max-width: 700px;">
         <div class="card-header-corma bg-danger"><h4>🚨 Reporte Ambiental</h4></div>
         <div class="card-body p-5">
-            <form action="/denuncias" method="post">
-                <div class="mb-3"><label class="fw-bold">Lugar</label><input type="text" name="lugarHechos" class="form-control" required></div>
-                <div class="mb-3"><label class="fw-bold">Descripción</label><textarea name="descripcionDenuncia" class="form-control" rows="4" required></textarea></div>
-                <div class="mb-3"><label class="fw-bold">Implicado (Opcional)</label><input type="text" name="nombreInfractor" class="form-control"></div>
-                <div class="form-check mb-3"><input class="form-check-input" type="checkbox" name="flagrancia" value="si"><label class="form-check-label">Es Flagrancia</label></div>
-                <button type="submit" class="btn btn-corma w-100">Radicar</button>
+            <form action="/denuncias" method="post" class="row g-4">
+                <div class="col-md-6">
+                    <label class="fw-bold">Nombres del denunciante</label>
+                    <input type="text" name="nombresDenunciante" class="form-control" placeholder="Nombres completos" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="fw-bold">Apellidos del denunciante</label>
+                    <input type="text" name="apellidosDenunciante" class="form-control" placeholder="Apellidos completos" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="fw-bold">Tipo de identificación</label>
+                    <select name="tipoIdentificacionDenunciante" class="form-select" required>
+                        <option value="">Seleccione...</option>
+                        <option value="CC">Cédula de ciudadanía</option>
+                        <option value="CE">Cédula de extranjería</option>
+                        <option value="TI">Tarjeta de identidad</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="fw-bold">Número de documento</label>
+                    <input type="number" name="numeroIdentificacionDenunciante" class="form-control" min="0" step="1" required>
+                </div>
+
+                <div class="col-12">
+                    <label class="fw-bold">Correo electrónico para respuesta</label>
+                    <input type="email" name="correoDenunciante" class="form-control" placeholder="correo@ejemplo.com" required>
+                </div>
+
+                <div class="col-12">
+                    <label class="fw-bold">Descripción de la denuncia</label>
+                    <textarea name="descripcionDenuncia" class="form-control" rows="4" placeholder="Cuéntenos qué ocurrió" required></textarea>
+                </div>
+
+                <div class="col-12">
+                    <label class="fw-bold">Anexar soporte (enlace o referencia)</label>
+                    <input type="text" name="soporteDenuncia" class="form-control" placeholder="Ej: enlace a almacenamiento, radicado anterior">
+                </div>
+
+                <div class="col-12">
+                    <div class="alert alert-info small mb-0">
+                        Estos campos corresponden al formulario oficial registrado en Camunda. La entidad validará la información y se comunicará al correo indicado.
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-corma w-100">Radicar denuncia</button>
+                </div>
             </form>
         </div>
     </div>

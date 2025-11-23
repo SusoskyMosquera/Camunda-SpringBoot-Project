@@ -31,16 +31,34 @@ public class EmployeeWebController1 {
                 "Activity_1dwso6r", "Activity_0qtkyf2"));
         ROLES_TAREAS.put("juridica", "Activity_1gpd4pm");
         ROLES_TAREAS.put("director", "Activity_0zhmpvm");
-        // 2. OTROS PROCESOS (PQRDS / Sancionatorio) - Se omiten tareas de PQRDS puras aquí.
-        ROLES_TAREAS.put("otros", String.join(",", "Activity_0aqdeas", "Activity_1hc4usc", "Activity_0v8jnti", "Activity_1xnfbt3", "Activity_0ry2plt", "Activity_0dtdoio", "Activity_0sw7kwk", "Activity_1232Cone", "Activity_0batq4k", "Activity_0l5a265", "Activity_0xrka9p", "Activity_1u8j2ux", "Activity_0j9v8ty", "Activity_10rhcun"));
+        // 2. OTROS PROCESOS (Sancionatorio)
+        ROLES_TAREAS.put("otros", String.join(",",
+            "Activity_1kmxdrx",
+            "Activity_0yrmz41",
+            "Activity_0aqdeas",
+            "Activity_0v8jnti",
+            "Activity_0sw7kwk",
+            "Activity_1232Cone",
+            "Activity_0dtdoio",
+            "Activity_0batq4k",
+            "Activity_0l5a265",
+            "Activity_1xnfbt3",
+            "Activity_0xrka9p",
+            "Activity_1u8j2ux",
+            "Activity_10rhcun"
+        ));
         TODAS_TAREAS_EMPLEADOS = ROLES_TAREAS.values().stream().collect(Collectors.joining(","));
     }
-    private final List<String> TAREAS_CON_FORMULARIO = Arrays.asList(
+        private final List<String> TAREAS_CON_FORMULARIO = Arrays.asList(
             "Activity_04cs59r", "Activity_0mt96ax", "Activity_1dwso6r",
             "Activity_0qtkyf2", "Activity_0vzruom", "Activity_1gpd4pm",
-            "Activity_0zhmpvm", "Activity_1v8lr4p", "Activity_0aqdeas",
-            "Activity_1hc4usc"
-    );
+            "Activity_0zhmpvm", "Activity_1v8lr4p",
+            "Activity_1kmxdrx", "Activity_0yrmz41",
+            "Activity_0aqdeas", "Activity_0v8jnti", "Activity_0sw7kwk",
+            "Activity_1232Cone", "Activity_0dtdoio", "Activity_0batq4k",
+            "Activity_0l5a265", "Activity_1xnfbt3", "Activity_0xrka9p",
+            "Activity_1u8j2ux", "Activity_10rhcun"
+        );
 
 
     // NOTA: Usamos "/licenciamiento" para la URL principal de la V1, o mantenemos "/" si el V2 usa otro.
@@ -55,7 +73,8 @@ public class EmployeeWebController1 {
                 taskKeys = ROLES_TAREAS.getOrDefault(rol, "");
             }
             // Usa BandejaService1 (V1)
-            List<Map> tareas = bandejaService.obtenerTareasPendientes(taskKeys);
+            @SuppressWarnings("unchecked")
+            List<Map<String, Object>> tareas = (List<Map<String, Object>>) (List<?>) bandejaService.obtenerTareasPendientes(taskKeys);
 
             for (Map<String, Object> tarea : tareas) {
                 String taskKey = (String) tarea.get("taskDefinitionKey");
