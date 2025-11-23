@@ -2,7 +2,7 @@
         xmlns="http://www.camunda.org/schema/1.0/ProcessApplication">
     <process-archive>
         <properties>
-            <property name="isDeleteUponUndeploy">false</property>
+            <property name="isDeleteUponUndeploy">true</property>
             <property name="isScanForProcessDefinitions">true</property>
             <property name="additionalResourceSuffixes">form, dmn, bpmn</property>
         </properties>
