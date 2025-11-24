@@ -35,12 +35,12 @@
       </bpmn:lane>
       <bpmn:lane id="Portal" name="Portal-Ventanilla">
         <bpmn:flowNodeRef>Gateway_0qocw7y</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_126vyhg</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1v8lr4p</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_1m0pzub</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1sd2ts0</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0yfml16</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0mjkozs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_126vyhg</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:exclusiveGateway id="Gateway_0qocw7y" name="¿Es competencia?">
@@ -48,9 +48,6 @@
       <bpmn:outgoing>Flow_1mho01m</bpmn:outgoing>
       <bpmn:outgoing>Flow_042txrk</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:endEvent id="Event_126vyhg" name="PQRDS rechazada">
-      <bpmn:incoming>Flow_0yyen9n</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:exclusiveGateway id="Gateway_1j2vlnt">
       <bpmn:incoming>Flow_09u4kg2</bpmn:incoming>
       <bpmn:incoming>Flow_05zacyc</bpmn:incoming>
@@ -195,6 +192,9 @@
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">${plazo}</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
+    <bpmn:endEvent id="Event_126vyhg" name="PQRDS rechazada">
+      <bpmn:incoming>Flow_0yyen9n</bpmn:incoming>
+    </bpmn:endEvent>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_03w4gb1">

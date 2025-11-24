@@ -36,9 +36,25 @@ public class PqrdsGeneralHandlers {
         public void execute(ExternalTask task, ExternalTaskService service) {
             String tipoSolicitud = (String) task.getVariable("tipoSolicitud");
             if (tipoSolicitud == null) tipoSolicitud = "Desconocido";
-
+            String numeroSolicitud = safe(task.getVariable("numeroSolicitud"));
+            String nombre         = safe(task.getVariable("nombre"));
+            String email          = safe(task.getVariable("email"));
+            String fechaSolicitud          = safe(task.getVariable("fechaSolicitud"));
+            String recibirRespuesta          = safe(task.getVariable("recibirRespuesta"));
+            String telefono          = safe(task.getVariable("telefono"));
+            System.out.println("===================================================================");
             logger.info(">>> [PQRDS] Rechazando solicitud por NO COMPETENCIA. Tipo: {}", tipoSolicitud);
+            System.out.println("===================================================================");
+            System.out.println(">>> [CORREO SIMULADO] Enviando Respuesta De rechazo PQRDS");
+            System.out.println("DESTINO: " + (recibirRespuesta.isBlank() ? "No registrado" : recibirRespuesta));
+            System.out.println("ASUNTO: Rechazo de PQRDS " + numeroSolicitud);
+            System.out.println("Fecha solicitud: " + (fechaSolicitud.isBlank() ? "No registrado" : fechaSolicitud));
+            System.out.println("Nombre: " + (nombre.isBlank() ? "No registrado" : nombre));
 
+            System.out.println("CORREO: " + (email.isBlank() ? "No registrado" : email));
+            System.out.println("TELEFONO: " + (telefono.isBlank() ? "No registrado" : telefono));
+
+            System.out.println("-------------------------------------------------------------------");
             String mensaje = "La solicitud de tipo " + tipoSolicitud + " no es competencia de la entidad.";
             service.complete(task, Collections.singletonMap("mensajeRechazo", mensaje));
         }
@@ -101,7 +117,7 @@ public class PqrdsGeneralHandlers {
             System.out.println("Respuesta dada: " + (respuestaSolicitud.isBlank() ? "No registrado" : respuestaSolicitud));
 
             System.out.println("CORREO: " + (email.isBlank() ? "No registrado" : email));
-            System.out.println("TELEFONO: " + (telefono.isBlank() ? "No registrado" : recibirRespuesta));
+            System.out.println("TELEFONO: " + (telefono.isBlank() ? "No registrado" : telefono));
 
             System.out.println("-------------------------------------------------------------------");
             System.out.println("DESCRIPCIÓN: " + (descripcion.isBlank() ? "Sin descripción" : descripcion));
